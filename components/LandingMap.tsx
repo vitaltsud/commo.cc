@@ -3,7 +3,8 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { countries } from "@/lib/countries";
-import { getEnglishLocaleForCountry } from "@/lib/locale-format";
+import { getEnglishLocaleForCountry, parseLocaleSegment } from "@/lib/locale-format";
+import { localePath } from "@/lib/paths";
 
 /** [longitude, latitude] — центр страны для маркера */
 const COUNTRY_COORDS: Record<string, [number, number]> = {
@@ -84,12 +85,14 @@ export function LandingMap() {
           </Geographies>
           {countries.map((c) => {
             const coords = COUNTRY_COORDS[c.code];
-            const href = getEnglishLocaleForCountry(c.code);
+            const seg = getEnglishLocaleForCountry(c.code);
+            const parsed = seg ? parseLocaleSegment(seg) : null;
+            const href = parsed ? localePath(parsed.country, parsed.lang) : null;
             if (!coords || !href) return null;
             return (
               <Marker key={c.code} coordinates={coords}>
                 <Link
-                  href={`/${href}`}
+                  href={href}
                   className="block w-4 h-4 -ml-2 -mt-2 rounded-full bg-accent border-2 border-white shadow-md hover:scale-125 hover:bg-accent/90 transition-transform focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent"
                   title={c.nativeName}
                   aria-label={`${c.nativeName} — open marketplace`}
@@ -101,12 +104,14 @@ export function LandingMap() {
         </div>
         <ul className="flex flex-col gap-2 md:min-w-[200px] md:justify-center shrink-0 border border-gray-200 rounded-xl bg-slate-50 p-4">
           {countries.map((c) => {
-            const href = getEnglishLocaleForCountry(c.code);
+            const seg = getEnglishLocaleForCountry(c.code);
+            const parsed = seg ? parseLocaleSegment(seg) : null;
+            const href = parsed ? localePath(parsed.country, parsed.lang) : null;
             if (!href) return null;
             return (
               <li key={c.code}>
                 <Link
-                  href={`/${href}`}
+                  href={href}
                   className="flex items-center gap-3 py-2 px-3 rounded-lg text-graphite hover:bg-white hover:shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
                   aria-label={`${c.nativeName} — open marketplace`}
                 >

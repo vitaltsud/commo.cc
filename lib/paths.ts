@@ -1,11 +1,11 @@
 /**
- * SEO-standard locale URLs: /country/lang/...
- * e.g. /pl/pl/, /ua/uk/how-it-works, /de/en/settings
+ * SEO locale URLs: GEO first, then language — /country/lang/...
+ * e.g. /pl/pl/, /gr/en/, /ua/uk/how-it-works. Google: "content for market X, language Y".
  */
 
 import type { CountryCode, LocaleCode } from "@/lib/countries";
 
-/** Build path with locale prefix: /{country}/{lang}{path} */
+/** Build path: /{country}/{lang}{path} */
 export function localePath(
   country: CountryCode | string,
   lang: LocaleCode | string,

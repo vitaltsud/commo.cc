@@ -3,7 +3,6 @@ import { headers } from "next/headers";
 import { getLocaleContext } from "@/components/LocaleProvider";
 import { LocaleProvider } from "@/components/LocaleContext";
 import { getCountryByCode, getContentLocalesForCountry, defaultCountryCode } from "@/lib/countries";
-import { toLocaleSegment } from "@/lib/locale-format";
 import { getBaseUrl, getAlternateUrls, pathSuffixFromInternalPath } from "@/lib/hreflang";
 import type { CountryCode, LocaleCode } from "@/lib/countries";
 import type { Metadata } from "next";
@@ -18,10 +17,9 @@ export async function generateMetadata({ params }: LayoutProps): Promise<Metadat
   const headersList = await headers();
   const pathname = headersList.get("x-pathname") ?? `/${country}/${lang}`;
   const suffix = pathSuffixFromInternalPath(pathname, country, lang);
-  const segment = toLocaleSegment(lang as LocaleCode, country as CountryCode);
   const base = getBaseUrl().replace(/\/$/, "");
   const pathPart = suffix ? `/${suffix}` : "";
-  const canonical = `${base}/${segment}${pathPart}`;
+  const canonical = `${base}/${country}/${lang}${pathPart}`;
   const languages = getAlternateUrls(suffix);
   return {
     alternates: {

@@ -3,7 +3,7 @@
  * https://developers.google.com/search/docs/specialty/international/localized-versions
  */
 
-import { getValidLocaleSegments } from "@/lib/locale-format";
+import { getValidLocaleSegments, parseLocaleSegment } from "@/lib/locale-format";
 
 const COUNTRY_TO_REGION: Record<string, string> = {
   pl: "PL",
@@ -24,15 +24,17 @@ export function localeSegmentToHreflang(segment: string): string {
   return region ? `${lang}-${region}` : lang;
 }
 
-/** All alternate URLs for a path suffix (e.g. "" or "signin" or "how-it-works"). */
+/** All alternate URLs for a path suffix. SEO: GEO first, then language — /country/lang/... (e.g. /pl/en/, /gr/en/). */
 export function getAlternateUrls(pathSuffix: string): Record<string, string> {
   const base = getBaseUrl().replace(/\/$/, "");
   const suffix = pathSuffix ? (pathSuffix.startsWith("/") ? pathSuffix : `/${pathSuffix}`) : "";
   const segments = getValidLocaleSegments();
   const out: Record<string, string> = {};
   for (const seg of segments) {
+    const parsed = parseLocaleSegment(seg);
+    if (!parsed) continue;
     const hreflang = localeSegmentToHreflang(seg);
-    out[hreflang] = `${base}/${seg}${suffix}`;
+    out[hreflang] = `${base}/${parsed.country}/${parsed.lang}${suffix}`;
   }
   return out;
 }

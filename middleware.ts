@@ -7,25 +7,20 @@ const PATHNAME_HEADER = "x-pathname";
 const DEFAULT_LOCALE = "/pl/pl";
 const VALID_LOCALE_SEGMENTS = getValidLocaleSegments();
 
-/** SEO locale URLs: /country/lang/... and /lang_country/... (en_pl); redirect legacy; set lang header. */
+/** SEO locale URLs: /country/lang/... (GEO first, then language). Legacy /en_pl/ → 301 to /pl/en/. */
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const search = request.nextUrl.search;
 
-  // Rewrite /en_pl/ or /en_pl/signin -> /pl/en/ or /pl/en/signin
+  // Redirect legacy /en_pl/ or /en_pl/signin → /pl/en/ or /pl/en/signin (canonical: country then lang)
   const firstSegment = pathname.split("/").filter(Boolean)[0]?.toLowerCase();
   if (firstSegment && VALID_LOCALE_SEGMENTS.includes(firstSegment)) {
     const parsed = parseLocaleSegment(firstSegment);
     if (parsed) {
       const segments = pathname.split("/").filter(Boolean);
       const rest = segments.slice(1).join("/");
-      const rewritten = `/${parsed.country}/${parsed.lang}${rest ? `/${rest}` : ""}`;
-      const url = request.nextUrl.clone();
-      url.pathname = rewritten;
-      const res = NextResponse.rewrite(url);
-      res.headers.set(LOCALE_HEADER, parsed.lang);
-      res.headers.set(PATHNAME_HEADER, rewritten);
-      return res;
+      const canonical = `/${parsed.country}/${parsed.lang}${rest ? `/${rest}` : ""}`;
+      return NextResponse.redirect(new URL(canonical + search, request.url), 301);
     }
   }
 
