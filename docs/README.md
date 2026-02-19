@@ -8,6 +8,7 @@
 - Примеры vhost: `server/nginx-commo.example.conf`, `server/apache-commo.example.conf`.
 
 - **[localization.md](localization.md)** — локализация по странам, языки контента, языки общения клиента и мастера.
+- **[urls-and-seo.md](urls-and-seo.md)** — структура URL (/страна/ = дефолтный язык, /страна/язык/ для остальных), middleware, canonical, hreflang.
 - **[translation-system.md](translation-system.md)** — система перевода: ядро и ключи на английском, строки из локалей; fallback на en.
 
 ## Развёртывание
