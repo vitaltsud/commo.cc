@@ -1,0 +1,77 @@
+{
+  "header": {
+    "logo": "commo.cc",
+    "howItWorks": "Jak to działa",
+    "forPros": "Dla fachowców",
+    "signIn": "Zaloguj przez Google",
+    "settings": "Ustawienia",
+    "myProjects": "Moje projekty",
+    "messages": "Wiadomości"
+  },
+  "home": {
+    "heroTitle": "Co trzeba naprawić?",
+    "searchPlaceholder": "Szukaj usługi...",
+    "orChooseCategory": "lub wybierz kategorię"
+  },
+  "country": {
+    "label": "Kraj",
+    "yourDataCountry": "Dane tylko dla tego kraju"
+  },
+  "language": {
+    "label": "Język",
+    "contentLanguage": "Język treści"
+  },
+  "settings": {
+    "title": "Ustawienia",
+    "country": "Twój kraj",
+    "countryHelp": "Będziesz widzieć tylko usługi i dane dla tego kraju.",
+    "communicationLanguages": "Języki komunikacji",
+    "communicationLanguagesHelp": "Języki, którymi mówisz. Widoczne dla klientów i fachowców przy przeglądaniu profilu.",
+    "save": "Zapisz"
+  },
+  "profile": {
+    "languages": "Języki",
+    "speaks": "Mówi"
+  },
+  "forPros": {
+    "title": "Dla fachowców",
+    "idVerification": "Weryfikacja tożsamości — buduj zaufanie u klientów.",
+    "noCommission": "Bez prowizji od zleceń — abonament w zależności od kategorii i regionu.",
+    "loyaltyDiscount": "Zniżka za lojalność — ocena 4.9+ obniża abonament.",
+    "immutableRatings": "Tylko klient wystawia ocenę; nie możesz jej edytować ani usuwać.",
+    "signInToStart": "Zaloguj się przez Google, aby zacząć."
+  },
+  "howItWorks": {
+    "title": "Jak to działa",
+    "step1Title": "Opisz, czego potrzebujesz.",
+    "step1Desc": "Użyj wyszukiwarki lub kategorii.",
+    "step2Title": "Dopasowanie do zweryfikowanych fachowców.",
+    "step2Desc": "Tylko specjaliści z weryfikacją ID i prawdziwymi ocenami klientów.",
+    "step3Title": "Czat i zatrudnienie.",
+    "step3Desc": "Komunikacja w Google Chat; ocenę wystawia klient — fachowiec nie może jej zmienić."
+  },
+  "signin": {
+    "title": "Zaloguj się",
+    "button": "Zaloguj przez Google",
+    "notConfigured": "Google OAuth nie jest jeszcze skonfigurowany.",
+    "configureHint": "Dodaj GOOGLE_CLIENT_ID do .env.local i ustaw redirect URI w Google Console: .../api/auth/callback/google",
+    "backToHome": "Strona główna"
+  },
+  "search": {
+    "searchResults": "Wyniki wyszukiwania",
+    "resultsComingNext": "Wyniki i filtry — wkrótce.",
+    "exampleLanguagesShown": "Przykład: przy przeglądaniu fachowca lub klienta wyświetlane są języki komunikacji:",
+    "sampleProClientCard": "Przykładowa karta fachowca / klienta",
+    "pluralReviews": "Liczba mnoga (opinie):"
+  },
+  "category": {
+    "cleaning": "Sprzątanie",
+    "plumbing": "Hydraulika",
+    "electrical": "Elektryka",
+    "construction": "Budowa i remonty",
+    "painting": "Malowanie",
+    "moving": "Przeprowadzki",
+    "landscaping": "Ogrodnictwo",
+    "appliances": "Agd"
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "header": {
+    "logo": "commo.cc",
+    "howItWorks": "Как это работает",
+    "forPros": "Для мастеров",
+    "signIn": "Войти через Google",
+    "settings": "Настройки",
+    "myProjects": "Мои проекты",
+    "messages": "Сообщения"
+  },
+  "home": {
+    "heroTitle": "Что нужно починить?",
+    "searchPlaceholder": "Поиск услуги...",
+    "orChooseCategory": "или выберите категорию"
+  },
+  "country": { "label": "Страна", "yourDataCountry": "Данные только по этой стране" },
+  "language": { "label": "Язык", "contentLanguage": "Язык контента" },
+  "settings": {
+    "title": "Настройки",
+    "country": "Ваша страна",
+    "countryHelp": "Вы будете видеть только услуги и данные по этой стране.",
+    "communicationLanguages": "Языки общения",
+    "communicationLanguagesHelp": "Языки, которыми вы владеете. Отображаются клиентам и мастерам при просмотре профиля.",
+    "save": "Сохранить"
+  },
+  "profile": {
+    "languages": "Языки",
+    "speaks": "Говорит",
+    "reviewsCount": {
+      "one": "{{count}} отзыв",
+      "few": "{{count}} отзыва",
+      "many": "{{count}} отзывов",
+      "other": "{{count}} отзывов"
+    },
+    "projectsCount": {
+      "one": "{{count}} проект",
+      "few": "{{count}} проекта",
+      "many": "{{count}} проектов",
+      "other": "{{count}} проектов"
+    }
+  },
+  "forPros": {
+    "title": "Для мастеров",
+    "idVerification": "Верификация ID — повышает доверие клиентов.",
+    "noCommission": "Без комиссии со сделок — подписка по категории и региону.",
+    "loyaltyDiscount": "Скидка при рейтинге 4.9+.",
+    "immutableRatings": "Оценки выставляет только клиент; мастер не может их менять.",
+    "signInToStart": "Войдите через Google, чтобы начать."
+  },
+  "howItWorks": {
+    "title": "Как это работает",
+    "step1Title": "Опишите, что нужно.",
+    "step1Desc": "Поиск или выбор категории.",
+    "step2Title": "Подбор проверенных мастеров.",
+    "step2Desc": "Только специалисты с верификацией ID и реальными оценками.",
+    "step3Title": "Общение и заказ.",
+    "step3Desc": "Чат в Google Chat; оценку оставляет клиент — мастер не может её изменить."
+  },
+  "signin": {
+    "title": "Вход",
+    "button": "Войти через Google",
+    "notConfigured": "Google OAuth ещё не настроен.",
+    "configureHint": "Добавьте GOOGLE_CLIENT_ID в .env.local и укажите redirect URI в Google Console: .../api/auth/callback/google",
+    "backToHome": "На главную"
+  },
+  "search": {
+    "searchResults": "Результаты поиска",
+    "resultsComingNext": "Результаты и фильтры — скоро.",
+    "exampleLanguagesShown": "Пример: при просмотре мастера или клиента отображаются языки общения:",
+    "sampleProClientCard": "Пример карточки мастера / клиента",
+    "pluralReviews": "Множественное число (отзывы):"
+  },
+  "category": {
+    "cleaning": "Уборка",
+    "plumbing": "Сантехника",
+    "electrical": "Электрика",
+    "construction": "Ремонт и строительство",
+    "painting": "Покраска",
+    "moving": "Переезды",
+    "landscaping": "Ландшафт",
+    "appliances": "Бытовая техника"
+  }
+}

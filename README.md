@@ -16,9 +16,17 @@ Global Trust Marketplace — сервисный маркетплейс (клие
 
 **https://github.com/vitaltsud/commo.cc**
 
-Клонирование:
+Клонирование и запуск:
 
 ```bash
 git clone https://github.com/vitaltsud/commo.cc.git
 cd commo.cc
+npm install
+npm run dev    # http://localhost:3000
 ```
+
+Сборка: `npm run build`. Старт продакшена: `npm run start`.
+
+**Деплой на сервер (по твоей команде):** скопируй `.env.deploy.example` в `.env.deploy`, укажи `COMMO_SSH` и `COMMO_REMOTE_PATH`. Дальше: `./scripts/deploy.sh` (bash) или `powershell -File scripts/deploy.ps1` — скрипт по SSH зайдёт на 84.247.164.76 и сделает pull, build, перезапуск. Подробнее: [docs/deployment/plan.md](docs/deployment/plan.md).
+
+**Auth:** Sign in with Google — заглушка. Добавь `GOOGLE_CLIENT_ID` в `.env.local` и укажи redirect URI в Google Console: `http://localhost:3000/api/auth/callback/google`. Полный обмен code → session — дальше (NextAuth или свой бэкенд).

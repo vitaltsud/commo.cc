@@ -1,0 +1,77 @@
+{
+  "header": {
+    "logo": "commo.cc",
+    "howItWorks": "Як це працює",
+    "forPros": "Для майстрів",
+    "signIn": "Увійти через Google",
+    "settings": "Налаштування",
+    "myProjects": "Мої проєкти",
+    "messages": "Повідомлення"
+  },
+  "home": {
+    "heroTitle": "Що потрібно полагодити?",
+    "searchPlaceholder": "Пошук послуги...",
+    "orChooseCategory": "або оберіть категорію"
+  },
+  "country": {
+    "label": "Країна",
+    "yourDataCountry": "Дані лише по цій країні"
+  },
+  "language": {
+    "label": "Мова",
+    "contentLanguage": "Мова контенту"
+  },
+  "settings": {
+    "title": "Налаштування",
+    "country": "Ваша країна",
+    "countryHelp": "Ви бачитимете лише послуги та дані по цій країні.",
+    "communicationLanguages": "Мови спілкування",
+    "communicationLanguagesHelp": "Мови, якими ви володієте. Відображаються клієнтам і майстрам при перегляді профілю.",
+    "save": "Зберегти"
+  },
+  "profile": {
+    "languages": "Мови",
+    "speaks": "Говорить"
+  },
+  "forPros": {
+    "title": "Для майстрів",
+    "idVerification": "Верифікація ID — підвищує довіру клієнтів.",
+    "noCommission": "Без комісії з угод — підписка за категорією та регіоном.",
+    "loyaltyDiscount": "Знижка при рейтингу 4.9+.",
+    "immutableRatings": "Оцінку ставить лише клієнт; майстер не може її змінити.",
+    "signInToStart": "Увійдіть через Google, щоб почати."
+  },
+  "howItWorks": {
+    "title": "Як це працює",
+    "step1Title": "Опишіть, що потрібно.",
+    "step1Desc": "Пошук або вибір категорії.",
+    "step2Title": "Підбір перевірених майстрів.",
+    "step2Desc": "Лише спеціалісти з верифікацією ID та реальними оцінками.",
+    "step3Title": "Спілкування та замовлення.",
+    "step3Desc": "Чат у Google Chat; оцінку залишає клієнт — майстер не може її змінити."
+  },
+  "signin": {
+    "title": "Вхід",
+    "button": "Увійти через Google",
+    "notConfigured": "Google OAuth ще не налаштовано.",
+    "configureHint": "Додайте GOOGLE_CLIENT_ID у .env.local та вкажіть redirect URI в Google Console: .../api/auth/callback/google",
+    "backToHome": "На головну"
+  },
+  "search": {
+    "searchResults": "Результати пошуку",
+    "resultsComingNext": "Результати та фільтри — незабаром.",
+    "exampleLanguagesShown": "Приклад: при перегляді майстра або клієнта відображаються мови спілкування:",
+    "sampleProClientCard": "Приклад картки майстра / клієнта",
+    "pluralReviews": "Множина (відгуки):"
+  },
+  "category": {
+    "cleaning": "Прибирання",
+    "plumbing": "Сантехніка",
+    "electrical": "Електрика",
+    "construction": "Ремонт і будівництво",
+    "painting": "Фарбування",
+    "moving": "Переїзди",
+    "landscaping": "Ландшафт",
+    "appliances": "Побутова техніка"
+  }
+}
