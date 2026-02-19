@@ -12,6 +12,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "commo.cc — Global Trust Marketplace",
   description: "Service marketplace connecting clients with verified professionals.",
+  icons: { icon: "/favicon.svg" },
 };
 
 export default async function RootLayout({

@@ -14,8 +14,9 @@ const COUNTRY_COORDS: Record<string, [number, number]> = {
   us: [-95.7, 37.6],
 };
 
+// Natural Earth GeoJSON (deldersveld topojson URL returns 404)
 const GEO_URL =
-  "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json";
+  "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_countries.geojson";
 
 const ComposableMap = dynamic(
   () => import("react-simple-maps").then((m) => m.ComposableMap),
@@ -38,13 +39,20 @@ const Sphere = dynamic(
   { ssr: false }
 );
 
+function flagEmoji(code: string): string {
+  return code
+    .toUpperCase()
+    .replace(/./g, (c) => String.fromCodePoint(0x1f1e6 - 65 + c.charCodeAt(0)));
+}
+
 export function LandingMap() {
   return (
     <section className="w-full max-w-4xl mx-auto">
       <h2 className="text-xl font-semibold text-graphite text-center mb-6">
         Choose your country
       </h2>
-      <div className="relative w-full aspect-[2/1] rounded-xl overflow-hidden border border-gray-200 bg-slate-50">
+      <div className="flex flex-col md:flex-row gap-6 items-stretch">
+        <div className="relative flex-1 min-w-0 aspect-[2/1] md:aspect-auto md:min-h-[320px] rounded-xl overflow-hidden border border-gray-200 bg-slate-50">
         <ComposableMap
           projection="geoMercator"
           projectionConfig={{
@@ -90,9 +98,30 @@ export function LandingMap() {
             );
           })}
         </ComposableMap>
+        </div>
+        <ul className="flex flex-col gap-2 md:min-w-[200px] md:justify-center shrink-0 border border-gray-200 rounded-xl bg-slate-50 p-4">
+          {countries.map((c) => {
+            const href = getEnglishLocaleForCountry(c.code);
+            if (!href) return null;
+            return (
+              <li key={c.code}>
+                <Link
+                  href={`/${href}`}
+                  className="flex items-center gap-3 py-2 px-3 rounded-lg text-graphite hover:bg-white hover:shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+                  aria-label={`${c.nativeName} — open marketplace`}
+                >
+                  <span className="text-2xl leading-none" aria-hidden>
+                    {flagEmoji(c.code)}
+                  </span>
+                  <span className="font-medium">{c.nativeName}</span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
       </div>
       <p className="text-center text-sm text-gray-500 mt-3">
-        Click a country to open the marketplace in that region (English).
+        Click a country or the map to open the marketplace (English).
       </p>
     </section>
   );
