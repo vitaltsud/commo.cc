@@ -1,5 +1,7 @@
 # Документация commo.cc
 
+- **[project-rules.md](project-rules.md)** — правила проекта: роль ассистента, деплой, переводы, контекст продукта, URL/SEO.
+
 ## Сервер (Kontabo 84.247.164.76)
 
 - **[server/README.md](server/README.md)** — хост, IP, SSH по ключам.
