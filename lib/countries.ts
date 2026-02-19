@@ -11,6 +11,8 @@ export type LocaleCode = "en" | "pl" | "ru" | "uk" | "de" | "fr" | "es";
 
 export interface CountryConfig {
   code: CountryCode;
+  /** Name of the country in its own language (for dropdown and display) */
+  nativeName: string;
   name: Record<string, string>;
   /** Content languages available in this country (UI + content) */
   contentLocales: LocaleCode[];
@@ -21,30 +23,35 @@ export interface CountryConfig {
 export const countries: CountryConfig[] = [
   {
     code: "pl",
+    nativeName: "Polska",
     name: { en: "Poland", pl: "Polska", ru: "Польша", uk: "Польща", de: "Polen", fr: "Pologne" },
     contentLocales: ["pl", "en", "ru", "uk"],
     activeCategoryIds: [], // all
   },
   {
     code: "ua",
+    nativeName: "Україна",
     name: { en: "Ukraine", pl: "Ukraina", ru: "Украина", uk: "Україна", de: "Ukraine", fr: "Ukraine" },
     contentLocales: ["uk", "en", "ru", "pl"],
     activeCategoryIds: [],
   },
   {
     code: "de",
+    nativeName: "Deutschland",
     name: { en: "Germany", pl: "Niemcy", ru: "Германия", uk: "Німеччина", de: "Deutschland", fr: "Allemagne" },
     contentLocales: ["de", "en"],
     activeCategoryIds: [],
   },
   {
     code: "gb",
+    nativeName: "United Kingdom",
     name: { en: "United Kingdom", pl: "Wielka Brytania", ru: "Великобритания", uk: "Великобританія", de: "Vereinigtes Königreich", fr: "Royaume-Uni" },
     contentLocales: ["en"],
     activeCategoryIds: [],
   },
   {
     code: "us",
+    nativeName: "United States",
     name: { en: "United States", pl: "Stany Zjednoczone", ru: "США", uk: "США", de: "Vereinigte Staaten", fr: "États-Unis" },
     contentLocales: ["en", "es"],
     activeCategoryIds: [],

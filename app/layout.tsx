@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { getLocaleContext } from "@/components/LocaleProvider";
-import { LocaleProvider } from "@/components/LocaleContext";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -20,14 +19,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const localeState = await getLocaleContext();
+  const headersList = await headers();
+  const lang = headersList.get("x-next-locale") ?? "en";
   return (
-    <html lang={localeState.localeCode} className={inter.variable}>
-      <body className="min-h-screen font-sans antialiased">
-        <LocaleProvider value={localeState}>
-          {children}
-        </LocaleProvider>
-      </body>
+    <html lang={lang} className={inter.variable}>
+      <body className="min-h-screen font-sans antialiased">{children}</body>
     </html>
   );
 }

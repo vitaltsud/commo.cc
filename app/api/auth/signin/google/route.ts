@@ -7,7 +7,7 @@ export function GET(req: NextRequest) {
   const baseUrl = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
   if (!clientId) {
-    return NextResponse.redirect(new URL("/signin", baseUrl));
+    return NextResponse.redirect(new URL("/pl/pl/signin", baseUrl));
   }
 
   const redirectUri = `${baseUrl}/api/auth/callback/google`;

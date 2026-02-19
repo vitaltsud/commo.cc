@@ -1,21 +1,25 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useLocale } from "./LocaleContext";
 import { setLocale } from "@/app/actions/locale";
 import { getContentLocalesForCountry } from "@/lib/countries";
 import { localeNamesNative } from "@/lib/locales";
 
+function pathWithoutLocale(pathname: string): string {
+  const segments = pathname.split("/").filter(Boolean);
+  return segments.slice(2).join("/") ?? "";
+}
+
 export function LanguageSelect() {
-  const router = useRouter();
+  const pathname = usePathname();
   const { countryCode, localeCode } = useLocale();
   const locales = getContentLocalesForCountry(countryCode);
 
   async function handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const code = e.target.value as "en" | "pl" | "ru" | "uk" | "de" | "fr" | "es";
     if (!code) return;
-    await setLocale(code);
-    router.refresh();
+    await setLocale(code, pathWithoutLocale(pathname));
   }
 
   return (

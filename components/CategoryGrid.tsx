@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useLocale } from "./LocaleContext";
-import { useT } from "./LocaleContext";
+import { useLocale, useLocalePath, useT } from "./LocaleContext";
 import { categories } from "@/lib/categories";
 import { getActiveCategoryIdsForCountry } from "@/lib/countries";
 
@@ -51,6 +50,7 @@ const iconMap: Record<string, React.ReactNode> = {
 
 export function CategoryGrid() {
   const t = useT();
+  const path = useLocalePath();
   const { countryCode } = useLocale();
   const activeIds = getActiveCategoryIdsForCountry(countryCode);
   const list = activeIds.length > 0 ? categories.filter((c) => activeIds.includes(c.id)) : categories;
@@ -60,7 +60,7 @@ export function CategoryGrid() {
       {list.map((cat) => (
         <Link
           key={cat.id}
-          href={`/search?category=${cat.slug}`}
+          href={path(`search/${cat.slug}`)}
           className="flex flex-col items-center gap-2 p-4 rounded-lg border border-gray-200 text-graphite hover:border-accent hover:text-accent transition-colors"
         >
           <span className="text-gray-400">{iconMap[cat.id] ?? iconMap.cleaning}</span>

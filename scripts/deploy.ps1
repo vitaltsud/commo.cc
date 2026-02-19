@@ -23,7 +23,7 @@ if (-not $sshTarget -or -not $remotePath) {
     exit 1
 }
 
-$cmd = "[ -s /root/.nvm/nvm.sh ] && . /root/.nvm/nvm.sh; cd $remotePath && git pull && (test -f package-lock.json && npm ci || npm install) && npm run build && (pm2 restart commo 2>/dev/null || pm2 start npm --name commo -- start 2>/dev/null || echo 'Start app manually')"
+$cmd = "[ -s /root/.nvm/nvm.sh ] && . /root/.nvm/nvm.sh; cd $remotePath && git pull && (test -f package-lock.json && npm ci || npm install) && npm run build && (pm2 restart commo 2>/dev/null || pm2 start ecosystem.config.cjs 2>/dev/null || pm2 start npm --name commo -- start 2>/dev/null || echo 'Start app manually: pm2 start ecosystem.config.cjs')"
 Write-Host "Deploying to $sshTarget ($remotePath) ..."
 if ($sshKey) { ssh -i $sshKey $sshTarget $cmd } else { ssh $sshTarget $cmd }
 Write-Host "Done."

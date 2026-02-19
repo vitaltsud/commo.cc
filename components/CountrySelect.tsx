@@ -1,21 +1,26 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useLocale } from "./LocaleContext";
 import { setCountry } from "@/app/actions/locale";
 import { getNested } from "@/lib/i18n";
 import { countries } from "@/lib/countries";
 
+/** Path without locale prefix: /pl/pl/settings -> "settings", /pl/pl -> "" */
+function pathWithoutLocale(pathname: string): string {
+  const segments = pathname.split("/").filter(Boolean);
+  return segments.slice(2).join("/") ?? "";
+}
+
 export function CountrySelect() {
-  const router = useRouter();
-  const { countryCode, localeCode, messages } = useLocale();
+  const pathname = usePathname();
+  const { countryCode, messages } = useLocale();
   const label = getNested(messages, "country.label") ?? "Country";
 
   async function handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const code = e.target.value as string;
     if (!code) return;
-    await setCountry(code);
-    router.refresh();
+    await setCountry(code, pathWithoutLocale(pathname));
   }
 
   return (
@@ -29,7 +34,7 @@ export function CountrySelect() {
       >
         {countries.map((c) => (
           <option key={c.code} value={c.code}>
-            {c.name[localeCode] ?? c.name.en}
+            {c.nativeName}
           </option>
         ))}
       </select>

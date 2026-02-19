@@ -1,10 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Header } from "@/components/Header";
-import { useLocale } from "./LocaleContext";
-import { useT } from "./LocaleContext";
+import { useLocale, useT } from "./LocaleContext";
 import { setCountry } from "@/app/actions/locale";
 import { countries, getContentLocalesForCountry } from "@/lib/countries";
 import { localeNamesNative } from "@/lib/locales";
@@ -30,10 +29,15 @@ function setStoredLanguages(locales: LocaleCode[]) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(locales));
 }
 
+function pathWithoutLocale(pathname: string): string {
+  const segments = pathname.split("/").filter(Boolean);
+  return segments.slice(2).join("/") ?? "";
+}
+
 export function SettingsContent() {
   const t = useT();
-  const router = useRouter();
-  const { countryCode, localeCode } = useLocale();
+  const pathname = usePathname();
+  const { countryCode } = useLocale();
   const [selectedCountry, setSelectedCountry] = useState(countryCode);
   const [communicationLangs, setCommunicationLangs] = useState<LocaleCode[]>([]);
   const [mounted, setMounted] = useState(false);
@@ -49,8 +53,7 @@ export function SettingsContent() {
 
   const handleSaveCountry = async () => {
     setStoredLanguages(communicationLangs);
-    await setCountry(selectedCountry);
-    router.refresh();
+    await setCountry(selectedCountry, pathWithoutLocale(pathname));
   };
 
   const toggleCommLang = (loc: LocaleCode) => {
@@ -77,7 +80,7 @@ export function SettingsContent() {
           >
             {countries.map((c) => (
               <option key={c.code} value={c.code}>
-                {c.name[localeCode] ?? c.name.en}
+                {c.nativeName}
               </option>
             ))}
           </select>

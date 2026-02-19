@@ -2,6 +2,7 @@
 
 import { createContext, useContext } from "react";
 import { translate, type TranslateOptions } from "@/lib/i18n";
+import { localePath } from "@/lib/paths";
 import type { LocaleCode } from "@/lib/countries";
 
 export interface LocaleState {
@@ -41,4 +42,10 @@ export function useT() {
   const { messages, localeCode } = useLocale();
   return (path: string, options?: TranslateOptions): string =>
     translate(messages, path, localeCode, options) || path;
+}
+
+/** Build locale-prefixed URL for current country/lang: path("") => "/pl/pl", path("how-it-works") => "/pl/pl/how-it-works" */
+export function useLocalePath() {
+  const { countryCode, localeCode } = useLocale();
+  return (path: string = "") => localePath(countryCode, localeCode, path);
 }

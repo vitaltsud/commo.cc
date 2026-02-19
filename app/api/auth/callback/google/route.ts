@@ -7,9 +7,9 @@ export async function GET(req: NextRequest) {
   const code = req.nextUrl.searchParams.get("code");
 
   if (!code) {
-    return NextResponse.redirect(new URL("/signin?error=no_code", baseUrl));
+    return NextResponse.redirect(new URL("/pl/pl/signin?error=no_code", baseUrl));
   }
 
   // TODO: exchange code for tokens, create user/session, redirect to dashboard
-  return NextResponse.redirect(new URL("/", baseUrl));
+  return NextResponse.redirect(new URL("/pl/pl", baseUrl));
 }

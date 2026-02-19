@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { Header } from "@/components/Header";
-import { useT } from "./LocaleContext";
+import { useT, useLocalePath } from "./LocaleContext";
 
 export function SigninContent({ hasGoogleAuth }: { hasGoogleAuth: boolean }) {
   const t = useT();
+  const path = useLocalePath();
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -22,7 +23,7 @@ export function SigninContent({ hasGoogleAuth }: { hasGoogleAuth: boolean }) {
           <div className="text-center text-gray-500 max-w-md">
             <p className="mb-2">{t("signin.notConfigured")}</p>
             <p className="text-sm">{t("signin.configureHint")}</p>
-            <Link href="/" className="mt-4 inline-block text-accent font-medium hover:underline">
+            <Link href={path("")} className="mt-4 inline-block text-accent font-medium hover:underline">
               {t("signin.backToHome")}
             </Link>
           </div>

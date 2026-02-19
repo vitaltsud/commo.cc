@@ -3,7 +3,7 @@
 Global Trust Marketplace — сервисный маркетплейс (клиенты ↔ мастера), жёсткая верификация и неизменяемые рейтинги.
 
 - **Стек:** Next.js (App Router), Tailwind, Framer Motion, Google OAuth, Google Chat
-- **Домены:** [commo.cc](https://commo.cc), [adm.commo.cc](https://adm.commo.cc)
+- **Домены:** основной сайт [https://commo.cc](https://commo.cc), админ-панель [https://adm.commo.cc](https://adm.commo.cc)
 - **Сервер:** Kontabo 84.247.164.76
 
 ## Документация

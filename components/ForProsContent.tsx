@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { Header } from "@/components/Header";
-import { useT } from "./LocaleContext";
+import { useT, useLocalePath } from "./LocaleContext";
 
 export function ForProsContent() {
   const t = useT();
+  const path = useLocalePath();
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -18,7 +19,7 @@ export function ForProsContent() {
           <li><strong>{t("forPros.immutableRatings")}</strong></li>
         </ul>
         <p className="mt-8">
-          <Link href="/signin" className="text-accent font-medium hover:underline">{t("forPros.signInToStart")}</Link>
+          <Link href={path("signin")} className="text-accent font-medium hover:underline">{t("forPros.signInToStart")}</Link>
         </p>
       </main>
     </div>

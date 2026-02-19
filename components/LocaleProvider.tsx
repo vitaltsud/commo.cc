@@ -1,6 +1,11 @@
-import { getLocaleFromCookies } from "@/app/actions/locale";
 import { getMessages } from "@/lib/i18n";
-import type { LocaleCode } from "@/lib/countries";
+import {
+  getCountryByCode,
+  getContentLocalesForCountry,
+  defaultCountryCode,
+  type CountryCode,
+  type LocaleCode,
+} from "@/lib/countries";
 
 export interface LocaleContextValue {
   countryCode: string;
@@ -8,8 +13,20 @@ export interface LocaleContextValue {
   messages: Record<string, unknown>;
 }
 
-export async function getLocaleContext(): Promise<LocaleContextValue> {
-  const { countryCode, localeCode } = await getLocaleFromCookies();
+export type LocaleParams = { country: string; lang: string };
+
+/** Build locale context from URL params (e.g. /pl/pl/). Invalid params fallback to default. */
+export async function getLocaleContext(params: LocaleParams): Promise<LocaleContextValue> {
+  const countryCode = (params.country || defaultCountryCode) as CountryCode;
+  const country = getCountryByCode(countryCode);
+  const validCountry = country ? countryCode : defaultCountryCode;
+  const locales = getContentLocalesForCountry(validCountry as CountryCode);
+  const langParam = (params.lang || locales[0]) as LocaleCode;
+  const localeCode = locales.includes(langParam) ? langParam : locales[0];
   const messages = await getMessages(localeCode);
-  return { countryCode, localeCode, messages };
+  return {
+    countryCode: validCountry,
+    localeCode,
+    messages,
+  };
 }
