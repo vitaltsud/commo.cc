@@ -1,17 +1,19 @@
 /**
- * SEO locale URLs: GEO first, then language — /country/lang/...
- * e.g. /pl/pl/, /gr/en/, /ua/uk/how-it-works. Google: "content for market X, language Y".
+ * SEO locale URLs: /country/ = default lang; /country/lang/ = non-default only.
  */
 
 import type { CountryCode, LocaleCode } from "@/lib/countries";
+import { getDefaultLangForCountry } from "@/lib/countries";
 
-/** Build path: /{country}/{lang}{path} */
+/** Build path: /country/ or /country/path for default lang; /country/lang/... for non-default. */
 export function localePath(
   country: CountryCode | string,
   lang: LocaleCode | string,
   path: string = ""
 ): string {
   const segment = path ? (path.startsWith("/") ? path : `/${path}`) : "";
+  const defaultLang = getDefaultLangForCountry(country as CountryCode);
+  if (lang === defaultLang) return `/${country}${segment}`;
   return `/${country}/${lang}${segment}`;
 }
 

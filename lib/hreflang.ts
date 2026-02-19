@@ -4,6 +4,7 @@
  */
 
 import { getValidLocaleSegments, parseLocaleSegment } from "@/lib/locale-format";
+import { getContentLocalesForCountry, getDefaultLangForCountry } from "@/lib/countries";
 
 const COUNTRY_TO_REGION: Record<string, string> = {
   pl: "PL",
@@ -24,7 +25,7 @@ export function localeSegmentToHreflang(segment: string): string {
   return region ? `${lang}-${region}` : lang;
 }
 
-/** All alternate URLs for a path suffix. SEO: GEO first, then language — /country/lang/... (e.g. /pl/en/, /gr/en/). */
+/** All alternate URLs. Default lang: /country/suffix; non-default: /country/lang/suffix. */
 export function getAlternateUrls(pathSuffix: string): Record<string, string> {
   const base = getBaseUrl().replace(/\/$/, "");
   const suffix = pathSuffix ? (pathSuffix.startsWith("/") ? pathSuffix : `/${pathSuffix}`) : "";
@@ -34,17 +35,23 @@ export function getAlternateUrls(pathSuffix: string): Record<string, string> {
     const parsed = parseLocaleSegment(seg);
     if (!parsed) continue;
     const hreflang = localeSegmentToHreflang(seg);
-    out[hreflang] = `${base}/${parsed.country}/${parsed.lang}${suffix}`;
+    const defaultLang = getDefaultLangForCountry(parsed.country);
+    const path = parsed.lang === defaultLang
+      ? `/${parsed.country}${suffix}`
+      : `/${parsed.country}/${parsed.lang}${suffix}`;
+    out[hreflang] = `${base}${path}`;
   }
   return out;
 }
 
-/** Path suffix from internal path /country/lang/... → "" or "signin" or "how-it-works". */
+/** Path suffix from pathname. Supports /country/ (default lang) and /country/lang/... (non-default). */
 export function pathSuffixFromInternalPath(pathname: string, country: string, lang: string): string {
-  const prefix = `/${country}/${lang}`;
-  if (pathname === prefix || pathname === `${prefix}/`) return "";
-  if (pathname.startsWith(`${prefix}/`)) {
-    return pathname.slice(prefix.length + 1).replace(/\/$/, "");
+  const segs = pathname.replace(/\/$/, "").split("/").filter(Boolean);
+  if (segs[0] !== country || segs.length < 2) return "";
+  const contentLocales = getContentLocalesForCountry(country);
+  const second = segs[1];
+  if (contentLocales.includes(second as "en" | "pl" | "ru" | "uk" | "de" | "fr" | "es")) {
+    return segs.slice(2).join("/").replace(/\/$/, "");
   }
-  return "";
+  return segs.slice(1).join("/").replace(/\/$/, "");
 }

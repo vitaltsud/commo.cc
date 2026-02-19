@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { getLocaleContext } from "@/components/LocaleProvider";
 import { LocaleProvider } from "@/components/LocaleContext";
-import { getCountryByCode, getContentLocalesForCountry, defaultCountryCode } from "@/lib/countries";
+import { getCountryByCode, getContentLocalesForCountry, getDefaultLangForCountry, defaultCountryCode } from "@/lib/countries";
 import { getBaseUrl, getAlternateUrls, pathSuffixFromInternalPath } from "@/lib/hreflang";
 import type { CountryCode, LocaleCode } from "@/lib/countries";
 import type { Metadata } from "next";
@@ -19,7 +19,10 @@ export async function generateMetadata({ params }: LayoutProps): Promise<Metadat
   const suffix = pathSuffixFromInternalPath(pathname, country, lang);
   const base = getBaseUrl().replace(/\/$/, "");
   const pathPart = suffix ? `/${suffix}` : "";
-  const canonical = `${base}/${country}/${lang}${pathPart}`;
+  const defaultLang = getDefaultLangForCountry(country as CountryCode);
+  const canonical = lang === defaultLang
+    ? `${base}/${country}${pathPart}`
+    : `${base}/${country}/${lang}${pathPart}`;
   const languages = getAlternateUrls(suffix);
   return {
     alternates: {
@@ -41,7 +44,9 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
   const validLang = (locales.includes(langParam as LocaleCode) ? langParam : locales[0]) as LocaleCode;
 
   if (countryParam !== validCountry || langParam !== validLang) {
-    redirect(`/${validCountry}/${validLang}`);
+    const defLang = getDefaultLangForCountry(validCountry as CountryCode);
+    const to = validLang === defLang ? `/${validCountry}` : `/${validCountry}/${validLang}`;
+    redirect(to);
   }
 
   const localeState = await getLocaleContext({ country: validCountry, lang: validLang });

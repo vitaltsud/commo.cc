@@ -69,6 +69,12 @@ export function getContentLocalesForCountry(countryCode: CountryCode): LocaleCod
   return country?.contentLocales ?? ["en"];
 }
 
+/** Default (first) content language for the country. Used for /country/ (one segment). */
+export function getDefaultLangForCountry(countryCode: CountryCode): LocaleCode {
+  const locales = getContentLocalesForCountry(countryCode);
+  return (locales[0] ?? "en") as LocaleCode;
+}
+
 export function getActiveCategoryIdsForCountry(countryCode: CountryCode): string[] {
   const country = getCountryByCode(countryCode);
   return country?.activeCategoryIds ?? [];
