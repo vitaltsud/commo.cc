@@ -1,0 +1,66 @@
+---
+description: commo.cc — vision, stack, business logic, sitemap, UI/UX, AI hooks
+alwaysApply: true
+---
+
+# commo.cc — Global Trust Marketplace (System Context)
+
+## 1. Project Vision
+
+**commo.cc** is a global service marketplace (similar to Kabanchik/Thumbtack) connecting clients with service professionals (handymen, electricians, etc.).
+
+- **Core Principle:** "Hard Trust" through mandatory ID verification and immutable client ratings.
+- **Monetization:** Tiered subscription model for professionals (no commissions from deals).
+- **Communication:** Integrated Google ecosystem (Auth, Google Chat, AI-driven sentiment analysis).
+
+## 2. Technical Stack & Architecture
+
+- **Frontend:** Next.js (App Router), Tailwind CSS, Framer Motion.
+- **Font:** Inter (primary font; optimize for Latin and Cyrillic).
+- **Design:** Ultra-minimalist, high-contrast (White / Graphite `#1A1A1A`), mobile-first, "Zen" UI.
+- **Auth:** Google OAuth 2.0 (mandatory for all users).
+- **Communication:** Automated creation of Google Chat Spaces for every matched project.
+- **Admin Panel:** `adm.commo.cc` — global monitoring and AI insights.
+
+## 3. Core Business Logic ("Engine")
+
+- **Hard ID Verification:** Professionals upload ID/Passport; verification status is a primary trust badge.
+- **Immutable Ratings:** Clients have final say; professional ratings cannot be edited or deleted by the provider.
+- **Tiered Subscriptions:** Cost depends on:
+  1. Service Category (e.g. Light: Cleaning vs Heavy: Construction).
+  2. Local Market Index (purchasing power of country/city).
+  3. Loyalty Discount: 4.9+ rated professionals get subscription discounts.
+- **AI Analytics:** AI monitors Google Chat logs for sentiment, fraud prevention, and strategy suggestions in Admin.
+
+## 4. Navigation & Sitemap
+
+### Public (commo.cc)
+
+- **Header:** Logo, "How it Works", "For Pros", "Sign in with Google".
+- **Hero:** Minimal search bar ("What do you need to fix?").
+- **Grid:** Category icons (Inter, line-style icons).
+
+### User Dashboard (after login)
+
+- Same minimalist design; add "My Projects", "Messages" (→ Google Chat), "Profile".
+- **Client:** Create project, view recommended pros, manage active jobs.
+- **Pro:** Lead feed, Subscription management, Reputation stats.
+
+### Admin Panel (adm.commo.cc)
+
+- Sidebar: Users (ID Queue), Global Economy (Pricing), AI Insights (Chat analysis), Scraping Management (Google Maps / Job Boards).
+
+## 5. UI/UX Guidelines
+
+- **Typography:** Inter only; line-height and letter-spacing for "premium utility" feel.
+- **Interactions:** `framer-motion` for subtle, fast transitions; no heavy animations.
+- **Mobile:** Thumb-friendly; sticky bottom navigation on mobile.
+- **Colors:**
+  - Background: `#FFFFFF`
+  - Main text: `#1A1A1A`
+  - Primary accent (buttons, verified badges): `#2563EB` (Electric Blue) or Indigo.
+
+## 6. AI Agent Integration (Marketing)
+
+- Support hooks for AI agents monitoring external platforms (Facebook Groups, Google Maps, Job Boards).
+- Store "External Leads" in the database for Admin outreach.
