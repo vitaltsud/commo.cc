@@ -1,16 +1,11 @@
-# commo.cc — инструкции для роботов
+# commo.cc — запрет индексации всего сайта
 
 User-agent: Yandex
-Allow: /
-Disallow: /api/
+Disallow: /
 
 # Основной зеркало сайта (для Яндекса)
 Host: https://commo.cc
 
-# Общие правила для всех роботов
+# Все роботы
 User-agent: *
-Allow: /
-Disallow: /api/
-
-# Sitemap (добавьте когда будет готов sitemap.xml)
-# Sitemap: https://commo.cc/sitemap.xml
+Disallow: /
