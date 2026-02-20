@@ -31,7 +31,8 @@
   },
   "profile": {
     "languages": "Języki",
-    "speaks": "Mówi"
+    "speaks": "Mówi",
+    "verified": "Zweryfikowany"
   },
   "forPros": {
     "title": "Dla fachowców",
@@ -62,7 +63,12 @@
     "resultsComingNext": "Wyniki i filtry — wkrótce.",
     "exampleLanguagesShown": "Przykład: przy przeglądaniu fachowca lub klienta wyświetlane są języki komunikacji:",
     "sampleProClientCard": "Przykładowa karta fachowca / klienta",
-    "pluralReviews": "Liczba mnoga (opinie):"
+    "pluralReviews": "Liczba mnoga (opinie):",
+    "projects": "Projekty",
+    "noProjects": "Brak projektów w tej kategorii.",
+    "client": "Zleceniodawca",
+    "pros": "Fachowcy",
+    "noPros": "Brak fachowców w tej kategorii."
   },
   "category": {
     "cleaning": "Sprzątanie",

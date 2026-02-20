@@ -38,6 +38,9 @@ Thumbs.db
 coverage/
 .nyc_output/
 
+# Database (local SQLite)
+data/
+
 # Misc
 *.log
 .cache
