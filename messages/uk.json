@@ -73,6 +73,10 @@
     "filterCity": "Місто",
     "allCities": "Усі міста"
   },
+  "project": {
+    "statusOpen": "Відкрито",
+    "statusClosed": "Закрито"
+  },
   "category": {
     "cleaning": "Прибирання",
     "plumbing": "Сантехніка",

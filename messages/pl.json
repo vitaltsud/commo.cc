@@ -97,6 +97,10 @@
     "filterCity": "Miasto",
     "allCities": "Wszystkie miasta"
   },
+  "project": {
+    "statusOpen": "Otwarty",
+    "statusClosed": "Zamknięty"
+  },
   "category": {
     "cleaning": "Sprzątanie",
     "plumbing": "Hydraulika",

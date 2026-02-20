@@ -8,7 +8,7 @@ import { FeedMasters } from "@/components/FeedMasters";
 import { useT } from "./LocaleContext";
 
 type CityRow = { id: number; countryCode: string; slug: string };
-type ProjectRow = { id: number; title: string; description: string | null; categorySlug: string; citySlug: string | null; clientName: string };
+type ProjectRow = { id: number; title: string; description: string | null; status: string; categorySlug: string; citySlug: string | null; clientName: string };
 type ProRow = { id: number; name: string; categorySlug: string; citySlug: string | null; rating: number | null; languages: string; verified: boolean; languagesArr?: string[] };
 
 type HomeContentProps = {

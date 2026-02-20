@@ -37,6 +37,11 @@ export function FeedMasters({ pros }: Props) {
                 {pro.name}
                 {pro.verified && <span className="ml-1 text-accent">✓</span>}
               </p>
+              {pro.citySlug && (
+                <p className="text-xs text-gray-500 mt-0.5">
+                  {t(`city.${pro.citySlug}` as "city.warsaw")}
+                </p>
+              )}
               <div className="mt-1">
                 <UserLanguagesBadge languages={pro.languages as LocaleCode[]} />
               </div>

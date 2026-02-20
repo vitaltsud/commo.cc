@@ -8,7 +8,7 @@ type PageProps = { params: Promise<{ country: string; lang: string }> };
 export default async function HomePage({ params }: PageProps) {
   const { country } = await params;
   let citiesList: { id: number; countryCode: string; slug: string }[] = [];
-  let recentProjects: { id: number; title: string; description: string | null; categorySlug: string; citySlug: string | null; clientName: string }[] = [];
+  let recentProjects: { id: number; title: string; description: string | null; status: string; categorySlug: string; citySlug: string | null; clientName: string }[] = [];
   let recentPros: { id: number; name: string; categorySlug: string; citySlug: string | null; rating: number | null; languages: string; verified: boolean; languagesArr?: string[] }[] = [];
 
   try {
@@ -20,6 +20,7 @@ export default async function HomePage({ params }: PageProps) {
         id: projects.id,
         title: projects.title,
         description: projects.description,
+        status: projects.status,
         categorySlug: projects.categorySlug,
         citySlug: projects.citySlug,
         clientName: users.name,

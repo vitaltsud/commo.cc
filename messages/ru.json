@@ -79,6 +79,10 @@
     "filterCity": "Город",
     "allCities": "Все города"
   },
+  "project": {
+    "statusOpen": "Открыт",
+    "statusClosed": "Закрыт"
+  },
   "category": {
     "cleaning": "Уборка",
     "plumbing": "Сантехника",
