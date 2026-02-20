@@ -10,11 +10,19 @@ export const users = sqliteTable("users", {
   createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull(),
 });
 
+/** Города по странам (переводы в messages: city.{slug}). */
+export const cities = sqliteTable("cities", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  countryCode: text("country_code").notNull(),
+  slug: text("slug").notNull(),
+});
+
 /** Проекты заказчиков. */
 export const projects = sqliteTable("projects", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   clientId: integer("client_id").notNull().references(() => users.id),
   countryCode: text("country_code").notNull(),
+  citySlug: text("city_slug"),
   categorySlug: text("category_slug").notNull(),
   title: text("title").notNull(),
   description: text("description"),
@@ -22,10 +30,11 @@ export const projects = sqliteTable("projects", {
   createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull(),
 });
 
-/** Профили мастеров: категория, рейтинг, языки, верификация. */
+/** Профили мастеров: категория, город, рейтинг, языки, верификация. */
 export const proProfiles = sqliteTable("pro_profiles", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   userId: integer("user_id").notNull().references(() => users.id),
+  citySlug: text("city_slug"),
   categorySlug: text("category_slug").notNull(),
   rating: integer("rating"), // 0-100 or null
   languages: text("languages").notNull(), // JSON array e.g. ["pl","en"]
@@ -33,6 +42,7 @@ export const proProfiles = sqliteTable("pro_profiles", {
   bio: text("bio"),
 });
 
+export type City = typeof cities.$inferSelect;
 export type User = typeof users.$inferSelect;
 export type Project = typeof projects.$inferSelect;
 export type ProProfile = typeof proProfiles.$inferSelect;

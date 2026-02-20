@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { Header } from "@/components/Header";
-import { useT } from "./LocaleContext";
+import { useT, useLocalePath } from "./LocaleContext";
 import { UserLanguagesBadge } from "./UserLanguagesBadge";
 import type { LocaleCode } from "@/lib/countries";
 
@@ -11,6 +12,7 @@ type ProjectRow = {
   description: string | null;
   status: string;
   categorySlug: string;
+  citySlug?: string | null;
   createdAt: number | Date | null;
   clientName: string;
   clientEmail: string;
@@ -22,27 +24,55 @@ type ProRow = {
   name: string;
   email: string;
   categorySlug: string;
+  citySlug?: string | null;
   rating: number | null;
   languages: string[];
   verified: boolean;
   bio: string | null;
 };
 
+type CityRow = { id: number; countryCode: string; slug: string };
+
 type SearchContentProps = {
   category: string;
+  city: string;
+  cities: CityRow[];
   projects: ProjectRow[];
   pros: ProRow[];
 };
 
-export function SearchContent({ category, projects, pros }: SearchContentProps) {
+export function SearchContent({ category, city, cities, projects, pros }: SearchContentProps) {
   const t = useT();
+  const path = useLocalePath();
+  const baseSearch = path(`search/${category}`);
   const title = category ? `${t("home.orChooseCategory")}: ${category}` : t("search.searchResults");
 
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1 max-w-6xl mx-auto px-4 py-8">
-        <h1 className="text-xl font-semibold text-graphite mb-6">{title}</h1>
+        <h1 className="text-xl font-semibold text-graphite mb-4">{title}</h1>
+
+        {cities.length > 0 && (
+          <div className="mb-6 flex flex-wrap items-center gap-2">
+            <span className="text-sm font-medium text-graphite">{t("search.filterCity")}:</span>
+            <Link
+              href={baseSearch}
+              className={`px-3 py-1.5 rounded-lg text-sm ${!city ? "bg-accent text-white" : "bg-gray-100 text-graphite hover:bg-gray-200"}`}
+            >
+              {t("search.allCities")}
+            </Link>
+            {cities.map((c) => (
+              <Link
+                key={c.id}
+                href={`${baseSearch}?city=${encodeURIComponent(c.slug)}`}
+                className={`px-3 py-1.5 rounded-lg text-sm ${city === c.slug ? "bg-accent text-white" : "bg-gray-100 text-graphite hover:bg-gray-200"}`}
+              >
+                {t(`city.${c.slug}` as "city.warsaw")}
+              </Link>
+            ))}
+          </div>
+        )}
 
         <section className="mb-10">
           <h2 className="text-lg font-medium text-graphite mb-3">{t("search.projects")}</h2>

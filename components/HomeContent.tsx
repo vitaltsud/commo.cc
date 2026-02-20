@@ -2,10 +2,33 @@
 
 import { Header } from "@/components/Header";
 import { CategoryGrid } from "@/components/CategoryGrid";
+import { BrowseByRegionCategory } from "@/components/BrowseByRegionCategory";
+import { FeedOffers } from "@/components/FeedOffers";
+import { FeedMasters } from "@/components/FeedMasters";
 import { useT } from "./LocaleContext";
 
-export function HomeContent() {
+type CityRow = { id: number; countryCode: string; slug: string };
+type ProjectRow = { id: number; title: string; description: string | null; categorySlug: string; citySlug: string | null; clientName: string };
+type ProRow = { id: number; name: string; categorySlug: string; citySlug: string | null; rating: number | null; languages: string; verified: boolean; languagesArr?: string[] };
+
+type HomeContentProps = {
+  cities?: CityRow[];
+  recentProjects?: ProjectRow[];
+  recentPros?: ProRow[];
+};
+
+export function HomeContent({ cities = [], recentProjects = [], recentPros = [] }: HomeContentProps) {
   const t = useT();
+  const prosForFeed = recentPros.map((p) => ({
+    id: p.id,
+    name: p.name,
+    categorySlug: p.categorySlug,
+    citySlug: p.citySlug,
+    rating: p.rating,
+    languages: p.languagesArr ?? [],
+    verified: p.verified,
+  }));
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -25,6 +48,10 @@ export function HomeContent() {
         <div className="w-full max-w-2xl mx-auto">
           <CategoryGrid />
         </div>
+
+        {cities.length > 0 && <BrowseByRegionCategory cities={cities} />}
+        <FeedOffers projects={recentProjects} />
+        <FeedMasters pros={prosForFeed} />
       </main>
     </div>
   );

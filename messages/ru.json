@@ -63,12 +63,21 @@
     "configureHint": "Добавьте GOOGLE_CLIENT_ID в .env.local и укажите redirect URI в Google Console: .../api/auth/callback/google",
     "backToHome": "На главную"
   },
+  "city": {
+    "warsaw": "Варшава", "krakow": "Краков", "gdansk": "Гданьск", "wroclaw": "Вроцлав", "poznan": "Познань",
+    "kyiv": "Киев", "lviv": "Львов", "odesa": "Одесса", "kharkiv": "Харьков",
+    "berlin": "Берлин", "munich": "Мюнхен", "hamburg": "Гамбург", "cologne": "Кёльн",
+    "london": "Лондон", "birmingham": "Бирмингем", "manchester": "Манчестер",
+    "newyork": "Нью-Йорк", "losangeles": "Лос-Анджелес", "chicago": "Чикаго", "houston": "Хьюстон"
+  },
   "search": {
     "searchResults": "Результаты поиска",
     "resultsComingNext": "Результаты и фильтры — скоро.",
     "exampleLanguagesShown": "Пример: при просмотре мастера или клиента отображаются языки общения:",
     "sampleProClientCard": "Пример карточки мастера / клиента",
-    "pluralReviews": "Множественное число (отзывы):"
+    "pluralReviews": "Множественное число (отзывы):",
+    "filterCity": "Город",
+    "allCities": "Все города"
   },
   "category": {
     "cleaning": "Уборка",

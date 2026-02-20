@@ -9,10 +9,12 @@ export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const country = searchParams.get("country") ?? "pl";
   const category = searchParams.get("category");
+  const city = searchParams.get("city");
 
   const db = getDb();
   const cond = [eq(projects.countryCode, country)];
   if (category) cond.push(eq(projects.categorySlug, category));
+  if (city) cond.push(eq(projects.citySlug, city));
 
   const rows = await db
     .select({

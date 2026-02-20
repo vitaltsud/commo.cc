@@ -11,7 +11,10 @@
   "home": {
     "heroTitle": "Co trzeba naprawić?",
     "searchPlaceholder": "Szukaj usługi...",
-    "orChooseCategory": "lub wybierz kategorię"
+    "orChooseCategory": "lub wybierz kategorię",
+    "browseByRegion": "Przeglądaj po regionie i kategorii",
+    "offersFeed": "Ostatnie oferty",
+    "mastersFeed": "Fachowcy w Twoim regionie"
   },
   "country": {
     "label": "Kraj",
@@ -51,6 +54,28 @@
     "step3Title": "Czat i zatrudnienie.",
     "step3Desc": "Komunikacja w Google Chat; ocenę wystawia klient — fachowiec nie może jej zmienić."
   },
+  "city": {
+    "warsaw": "Warszawa",
+    "krakow": "Kraków",
+    "gdansk": "Gdańsk",
+    "wroclaw": "Wrocław",
+    "poznan": "Poznań",
+    "kyiv": "Kijów",
+    "lviv": "Lwów",
+    "odesa": "Odessa",
+    "kharkiv": "Charków",
+    "berlin": "Berlin",
+    "munich": "Monachium",
+    "hamburg": "Hamburg",
+    "cologne": "Kolonia",
+    "london": "Londyn",
+    "birmingham": "Birmingham",
+    "manchester": "Manchester",
+    "newyork": "Nowy Jork",
+    "losangeles": "Los Angeles",
+    "chicago": "Chicago",
+    "houston": "Houston"
+  },
   "signin": {
     "title": "Zaloguj się",
     "button": "Zaloguj przez Google",
@@ -68,7 +93,9 @@
     "noProjects": "Brak projektów w tej kategorii.",
     "client": "Zleceniodawca",
     "pros": "Fachowcy",
-    "noPros": "Brak fachowców w tej kategorii."
+    "noPros": "Brak fachowców w tej kategorii.",
+    "filterCity": "Miasto",
+    "allCities": "Wszystkie miasta"
   },
   "category": {
     "cleaning": "Sprzątanie",
