@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer, primaryKey } from "drizzle-orm/sqlite-core";
 
 /**
  * Users: один аккаунт может быть и заказчиком, и мастером.
@@ -61,7 +61,7 @@ export const proProfileCities = sqliteTable(
     proProfileId: integer("pro_profile_id").notNull().references(() => proProfiles.id, { onDelete: "cascade" }),
     citySlug: text("city_slug").notNull(),
   },
-  (t) => [{ primaryKey: [t.proProfileId, t.citySlug] }]
+  (t) => [primaryKey({ columns: [t.proProfileId, t.citySlug] })]
 );
 
 export type City = typeof cities.$inferSelect;
