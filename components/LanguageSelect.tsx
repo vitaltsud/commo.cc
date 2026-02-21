@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { useLocale } from "./LocaleContext";
 import { setLocale } from "@/app/actions/locale";
 import { pathWithoutLocale } from "@/lib/paths";
-import { getContentLocalesForCountrySorted } from "@/lib/countries";
+import { getContentLocalesForCountrySorted, type LocaleCode } from "@/lib/countries";
 import { localeNamesNative } from "@/lib/locales";
 
 export function LanguageSelect() {
@@ -15,7 +15,7 @@ export function LanguageSelect() {
   async function handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const code = e.target.value;
     if (!code) return;
-    await setLocale(code, pathWithoutLocale(pathname, countryCode), citySlug);
+    await setLocale(code as LocaleCode, pathWithoutLocale(pathname, countryCode), citySlug);
   }
 
   return (
