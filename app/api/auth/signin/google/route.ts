@@ -16,7 +16,7 @@ export function GET(req: NextRequest) {
   }
 
   const callbackUrl = req.nextUrl.searchParams.get("callbackUrl");
-  const state = isValidCallbackUrl(callbackUrl) ? encodeURIComponent(callbackUrl) : "";
+  const state = isValidCallbackUrl(callbackUrl) ? encodeURIComponent(callbackUrl ?? "") : "";
 
   const redirectUri = `${baseUrl}/api/auth/callback/google`;
   const params = new URLSearchParams({
