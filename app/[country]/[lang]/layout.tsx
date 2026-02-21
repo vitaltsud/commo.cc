@@ -56,7 +56,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
   return (
     <LocaleProvider value={localeState}>
       <ViewModeProvider>
-        <div className="min-h-screen flex flex-col w-full">
+        <div className="min-h-screen flex flex-col w-full overflow-x-hidden">
           {children}
           <Footer />
         </div>

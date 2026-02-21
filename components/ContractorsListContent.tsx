@@ -34,8 +34,8 @@ export function ContractorsListContent({ pros }: ContractorsListContentProps) {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 flex flex-col items-center px-4 py-12 md:py-16">
-        <div className="w-full max-w-4xl mx-auto mb-4">
+      <main className="flex-1 flex flex-col items-center px-4 py-6 sm:py-8 md:py-16">
+        <div className="w-full max-w-4xl mx-auto mb-3 sm:mb-4">
           <Breadcrumbs
             items={breadcrumbItems}
             pageSchema={{
@@ -47,7 +47,7 @@ export function ContractorsListContent({ pros }: ContractorsListContentProps) {
           />
         </div>
         <div className="w-full max-w-3xl mx-auto">
-          <h1 className="text-2xl font-semibold text-graphite mb-6">{t("home.contractorsSectionTitle")}</h1>
+          <h1 className="text-xl sm:text-2xl font-semibold text-graphite mb-4 sm:mb-6">{t("home.contractorsSectionTitle")}</h1>
           <ul className="space-y-2">
             {pros.length === 0 ? (
               <li className="text-sm text-gray-500 py-8">{t("search.noPros")}</li>
@@ -56,7 +56,7 @@ export function ContractorsListContent({ pros }: ContractorsListContentProps) {
                 <li key={pro.id}>
                   <Link
                     href={pro.slug ? path(`contractor/${pro.slug}`) : path(`contractors/${pro.categorySlug}`)}
-                    className="block p-3 rounded-lg border border-gray-200 bg-white hover:border-accent hover:bg-gray-50 text-sm"
+                    className="block p-3 rounded-lg border border-gray-200 bg-white hover:border-accent hover:bg-gray-50 text-sm min-h-[52px]"
                   >
                     <p className="font-medium text-graphite">
                       {pro.name}

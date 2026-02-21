@@ -56,14 +56,12 @@ export function CategoryGrid() {
   const list = activeIds.length > 0 ? categories.filter((c) => activeIds.includes(c.id)) : categories;
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-10">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-6 sm:mt-10">
       {list.map((cat) => (
         <Link
           key={cat.id}
           href={path(`projects/${cat.slug}`)}
-          className="flex flex-col items-center gap-2 p-4 rounded-lg border border-gray-200 text-graphite hover:border-accent hover:text-accent transition-colors"
-          target="_blank"
-          rel="noopener noreferrer"
+          className="flex flex-col items-center justify-center gap-2 p-4 min-h-[88px] sm:min-h-0 rounded-lg border border-gray-200 text-graphite hover:border-accent hover:text-accent transition-colors active:bg-gray-50"
         >
           <span className="text-gray-400">{iconMap[cat.id] ?? iconMap.cleaning}</span>
           <span className="text-sm font-medium">{t(`category.${cat.id}`)}</span>

@@ -31,8 +31,8 @@ export function ProjectsListContent({ projects }: ProjectsListContentProps) {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 flex flex-col items-center px-4 py-12 md:py-16">
-        <div className="w-full max-w-4xl mx-auto mb-4">
+      <main className="flex-1 flex flex-col items-center px-4 py-6 sm:py-8 md:py-16">
+        <div className="w-full max-w-4xl mx-auto mb-3 sm:mb-4">
           <Breadcrumbs
             items={breadcrumbItems}
             pageSchema={{
@@ -44,14 +44,14 @@ export function ProjectsListContent({ projects }: ProjectsListContentProps) {
           />
         </div>
         <div className="w-full max-w-3xl mx-auto">
-          <h1 className="text-2xl font-semibold text-graphite mb-6">{t("home.projectsSectionTitle")}</h1>
+          <h1 className="text-xl sm:text-2xl font-semibold text-graphite mb-4 sm:mb-6">{t("home.projectsSectionTitle")}</h1>
           <ul className="space-y-2">
             {projects.length === 0 ? (
               <li className="text-sm text-gray-500 py-8">{t("search.noProjects")}</li>
             ) : (
               projects.map((p) => (
                 <li key={p.id}>
-                  <div className="block p-3 rounded-lg border border-gray-200 bg-white hover:border-gray-300 text-sm">
+                  <div className="block p-3 sm:p-3 rounded-lg border border-gray-200 bg-white hover:border-gray-300 text-sm min-h-[52px] flex flex-col justify-center">
                     <p className="font-medium text-graphite">{p.title}</p>
                     {p.description && <p className="text-xs text-gray-500 truncate mt-0.5">{p.description}</p>}
                     <div className="flex flex-wrap gap-2 mt-1.5 text-xs text-gray-500 items-center">

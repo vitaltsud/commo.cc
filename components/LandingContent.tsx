@@ -31,8 +31,8 @@ export function LandingContent() {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <header className="border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-4">
-          <Link href="/" className="text-xl font-semibold text-graphite">
+        <div className="max-w-4xl mx-auto px-4 py-3 sm:py-4 flex flex-wrap items-center justify-between gap-3">
+          <Link href="/" className="text-lg sm:text-xl font-semibold text-graphite min-h-[44px] flex items-center">
             commo.cc
           </Link>
           <nav className="flex flex-wrap items-center gap-2" aria-label={t("landing.chooseLanguage")}>
@@ -43,7 +43,7 @@ export function LandingContent() {
                 <Link
                   key={lang}
                   href={href}
-                  className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
+                  className={`rounded-lg px-3 py-2.5 min-h-[44px] inline-flex items-center text-sm font-medium transition-colors ${
                     isCurrent ? "bg-accent text-white" : "text-graphite hover:bg-gray-100"
                   }`}
                   aria-current={isCurrent ? "true" : undefined}
@@ -73,7 +73,7 @@ export function LandingContent() {
                 <li key={c.code}>
                   <Link
                     href={href}
-                    className="flex flex-col items-center gap-2 py-4 px-5 rounded-xl border border-gray-200 bg-white text-graphite shadow-sm hover:border-accent hover:bg-accent/5 transition-colors focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+                    className="flex flex-col items-center justify-center gap-2 py-4 px-4 sm:px-5 min-h-[80px] rounded-xl border border-gray-200 bg-white text-graphite shadow-sm hover:border-accent hover:bg-accent/5 transition-colors focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 active:bg-accent/5"
                     aria-label={getCountryNameInLocale(c, localeCode)}
                   >
                     <img
@@ -92,11 +92,11 @@ export function LandingContent() {
           </ul>
         </section>
 
-        <section className="grid gap-6 md:grid-cols-3 mb-16">
+        <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-10 sm:mb-16">
           {BLOCK_KEYS.map(({ titleKey, descKey }) => (
             <div
               key={titleKey}
-              className="p-5 rounded-xl border border-gray-200 text-graphite"
+              className="p-4 sm:p-5 rounded-xl border border-gray-200 text-graphite"
             >
               <h2 className="font-semibold text-lg mb-2">{t(titleKey)}</h2>
               <p className="text-sm text-gray-600">{t(descKey)}</p>

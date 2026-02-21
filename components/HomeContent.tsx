@@ -42,8 +42,8 @@ export function HomeContent({ cities = [], recentProjects = [], recentPros = [],
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 flex flex-col items-center px-4 py-12 md:py-16">
-        <div className="w-full max-w-4xl mx-auto mb-4">
+      <main className="flex-1 flex flex-col items-center px-4 py-6 sm:py-8 md:py-16">
+        <div className="w-full max-w-4xl mx-auto mb-2 sm:mb-4">
           <Breadcrumbs
             items={breadcrumbItems}
             pageSchema={{
@@ -54,16 +54,16 @@ export function HomeContent({ cities = [], recentProjects = [], recentPros = [],
           />
         </div>
 
-        <section className="w-full max-w-6xl mx-auto mb-12 grid md:grid-cols-2 gap-8 md:gap-12" aria-label={t("home.sectionProjectsContractors")}>
-          <div id="home-projects" className="rounded-xl border border-gray-200 bg-gray-50/50 p-4 md:p-6 scroll-mt-20">
-            <h2 className="text-lg font-semibold text-graphite mb-4">{t("home.projectsSectionTitle")}</h2>
-            <ul className="space-y-2 max-h-[320px] overflow-y-auto">
+        <section className="w-full max-w-6xl mx-auto mb-8 sm:mb-12 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 md:gap-12" aria-label={t("home.sectionProjectsContractors")}>
+          <div id="home-projects" className="rounded-xl border border-gray-200 bg-gray-50/50 p-3 sm:p-4 md:p-6 scroll-mt-20">
+            <h2 className="text-lg font-semibold text-graphite mb-3 sm:mb-4">{t("home.projectsSectionTitle")}</h2>
+            <ul className="space-y-2 max-h-[280px] sm:max-h-[320px] overflow-y-auto">
               {allProjects.length === 0 ? (
                 <li className="text-sm text-gray-500 py-4">{t("search.noProjects")}</li>
               ) : (
                 allProjects.map((p) => (
                   <li key={p.id}>
-                    <div className="block p-2.5 rounded-lg border border-gray-100 bg-white hover:border-gray-200 text-sm">
+                    <div className="block p-3 sm:p-2.5 rounded-lg border border-gray-100 bg-white hover:border-gray-200 text-sm min-h-[44px] flex flex-col justify-center">
                       <p className="font-medium text-graphite">{p.title}</p>
                       {p.description && <p className="text-xs text-gray-500 truncate mt-0.5">{p.description}</p>}
                       <div className="flex flex-wrap gap-2 mt-1.5 text-xs text-gray-500 items-center">
@@ -82,9 +82,9 @@ export function HomeContent({ cities = [], recentProjects = [], recentPros = [],
               )}
             </ul>
           </div>
-          <div id="home-contractors" className="rounded-xl border border-gray-200 bg-gray-50/50 p-4 md:p-6 scroll-mt-20">
-            <h2 className="text-lg font-semibold text-graphite mb-4">{t("home.contractorsSectionTitle")}</h2>
-            <ul className="space-y-2 max-h-[320px] overflow-y-auto">
+          <div id="home-contractors" className="rounded-xl border border-gray-200 bg-gray-50/50 p-3 sm:p-4 md:p-6 scroll-mt-20">
+            <h2 className="text-lg font-semibold text-graphite mb-3 sm:mb-4">{t("home.contractorsSectionTitle")}</h2>
+            <ul className="space-y-2 max-h-[280px] sm:max-h-[320px] overflow-y-auto">
               {allPros.length === 0 ? (
                 <li className="text-sm text-gray-500 py-4">{t("search.noPros")}</li>
               ) : (
@@ -92,7 +92,7 @@ export function HomeContent({ cities = [], recentProjects = [], recentPros = [],
                   <li key={pro.id}>
                     <Link
                       href={pro.slug ? path(`contractor/${pro.slug}`) : path(`contractors/${pro.categorySlug}`)}
-                      className="block p-2.5 rounded-lg border border-gray-100 bg-white hover:border-accent hover:bg-gray-50 text-sm"
+                      className="block p-3 sm:p-2.5 rounded-lg border border-gray-100 bg-white hover:border-accent hover:bg-gray-50 text-sm min-h-[44px]"
                     >
                       <p className="font-medium text-graphite">
                         {pro.name}
@@ -115,29 +115,29 @@ export function HomeContent({ cities = [], recentProjects = [], recentPros = [],
           </div>
         </section>
 
-        <h1 className="text-3xl md:text-4xl font-semibold text-graphite text-center mb-4">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-graphite text-center mb-3 sm:mb-4 px-2">
           {t("home.heroTitle")}
         </h1>
-        <div className="w-full max-w-xl">
+        <div className="w-full max-w-xl px-0 sm:px-0">
           <input
             type="search"
             placeholder={t("home.searchPlaceholder")}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg text-graphite placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+            className="w-full px-4 py-3 text-base border border-gray-300 rounded-lg text-graphite placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent min-h-[44px]"
             aria-label={t("home.searchPlaceholder")}
           />
         </div>
         <p className="mt-6 text-sm text-gray-500 text-center">{t("home.orChooseCategory")}</p>
 
-        <div className="w-full max-w-2xl mx-auto mt-6">
+        <div className="w-full max-w-2xl mx-auto mt-4 sm:mt-6 px-0">
           <CategoryGrid />
         </div>
 
-        <section className="w-full max-w-4xl mx-auto mt-16 md:mt-20 px-2" aria-labelledby="home-benefits-title">
-          <h2 id="home-benefits-title" className="text-2xl md:text-3xl font-semibold text-graphite text-center mb-10">
+        <section className="w-full max-w-4xl mx-auto mt-10 sm:mt-16 md:mt-20 px-2" aria-labelledby="home-benefits-title">
+          <h2 id="home-benefits-title" className="text-xl sm:text-2xl md:text-3xl font-semibold text-graphite text-center mb-6 sm:mb-10">
             {t("home.benefits.title")}
           </h2>
-          <div className="grid md:grid-cols-2 gap-10 md:gap-12">
-            <div className="rounded-xl border border-gray-200 bg-gray-50/50 p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10 md:gap-12">
+            <div className="rounded-xl border border-gray-200 bg-gray-50/50 p-4 sm:p-6">
               <h3 className="text-lg font-semibold text-graphite mb-4">{t("home.benefits.forClients")}</h3>
               <ul className="space-y-3 text-gray-700 text-sm">
                 <li className="flex gap-3">
@@ -158,7 +158,7 @@ export function HomeContent({ cities = [], recentProjects = [], recentPros = [],
                 </li>
               </ul>
             </div>
-            <div className="rounded-xl border border-gray-200 bg-gray-50/50 p-6">
+            <div className="rounded-xl border border-gray-200 bg-gray-50/50 p-4 sm:p-6">
               <h3 className="text-lg font-semibold text-graphite mb-4">{t("home.benefits.forPros")}</h3>
               <ul className="space-y-3 text-gray-700 text-sm">
                 <li className="flex gap-3">

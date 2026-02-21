@@ -41,7 +41,7 @@ export function Breadcrumbs({ items, pageSchema }: BreadcrumbsProps) {
   return (
     <>
       <nav aria-label="Breadcrumb" className="mb-4">
-        <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-600" itemScope itemType="https://schema.org/BreadcrumbList">
+        <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm text-gray-600 overflow-x-auto" itemScope itemType="https://schema.org/BreadcrumbList">
           {items.map((item, i) => (
             <li key={i} className="flex items-center gap-x-2" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
               {i > 0 && <span aria-hidden="true">/</span>}
