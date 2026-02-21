@@ -2,9 +2,12 @@
 
 import Link from "next/link";
 import { Header } from "@/components/Header";
+import { Breadcrumbs, BREADCRUMBS_WEBSITE_ID } from "@/components/Breadcrumbs";
 import { useT, useLocalePath } from "./LocaleContext";
 import { UserLanguagesBadge } from "./UserLanguagesBadge";
 import type { LocaleCode } from "@/lib/countries";
+
+const BASE_URL = typeof process !== "undefined" ? (process.env.NEXT_PUBLIC_APP_URL ?? "https://commo.cc").replace(/\/$/, "") : "https://commo.cc";
 
 type ProjectRow = {
   id: number;
@@ -29,6 +32,7 @@ type ProRow = {
   languages: string[];
   verified: boolean;
   bio: string | null;
+  slug?: string | null;
 };
 
 type CityRow = { id: number; countryCode: string; slug: string };
@@ -46,11 +50,63 @@ export function SearchContent({ category, city, cities, projects, pros }: Search
   const path = useLocalePath();
   const baseSearch = path(`search/${category}`);
   const title = category ? `${t("home.orChooseCategory")}: ${category}` : t("search.searchResults");
+  const breadcrumbItems = category
+    ? [
+        { label: t("breadcrumbs.home"), href: path("") },
+        { label: t("breadcrumbs.search"), href: path("") },
+        { label: category, href: baseSearch },
+      ]
+    : [
+        { label: t("breadcrumbs.home"), href: path("") },
+        { label: t("breadcrumbs.search"), href: path("search") },
+      ];
+  const projectsListSchema =
+    projects.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: t("search.projects"),
+          numberOfItems: projects.length,
+          itemListElement: projects.slice(0, 50).map((p, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            item: { "@type": "Demand", name: p.title, description: p.description ?? undefined },
+          })),
+        }
+      : null;
+  const prosListSchema =
+    pros.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: t("search.pros"),
+          numberOfItems: pros.length,
+          itemListElement: pros.slice(0, 50).map((pro, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            item: {
+              "@type": "Person",
+              name: pro.name,
+              url: `${BASE_URL}${path(`contractor/${pro.slug ?? pro.id}`).startsWith("/") ? path(`contractor/${pro.slug ?? pro.id}`) : `/${path(`contractor/${pro.slug ?? pro.id}`)}`}`,
+            },
+          })),
+        }
+      : null;
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col w-full">
       <Header />
-      <main className="flex-1 max-w-6xl mx-auto px-4 py-8">
+      <main className="flex-1 w-full max-w-6xl mx-auto px-4 py-8">
+        <Breadcrumbs
+          items={breadcrumbItems}
+          pageSchema={{
+            name: title,
+            url: category ? baseSearch : path("search"),
+            isPartOf: { "@id": BREADCRUMBS_WEBSITE_ID },
+          }}
+        />
+        {projectsListSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(projectsListSchema) }} />}
+        {prosListSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(prosListSchema) }} />}
         <h1 className="text-xl font-semibold text-graphite mb-4">{title}</h1>
 
         {cities.length > 0 && (

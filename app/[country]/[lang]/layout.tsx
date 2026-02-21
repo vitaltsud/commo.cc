@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { getLocaleContext } from "@/components/LocaleProvider";
 import { LocaleProvider } from "@/components/LocaleContext";
+import { ViewModeProvider } from "@/components/ViewModeContext";
+import { Footer } from "@/components/Footer";
 import { getCountryByCode, getContentLocalesForCountry, getDefaultLangForCountry, defaultCountryCode } from "@/lib/countries";
 import { getBaseUrl, getAlternateUrls, pathSuffixFromInternalPath } from "@/lib/hreflang";
 import type { CountryCode, LocaleCode } from "@/lib/countries";
@@ -16,14 +18,11 @@ export async function generateMetadata({ params }: LayoutProps): Promise<Metadat
   const { country, lang } = await params;
   const headersList = await headers();
   const pathname = headersList.get("x-pathname") ?? `/${country}/${lang}`;
+  const citySlug = headersList.get("x-city") ?? null;
   const suffix = pathSuffixFromInternalPath(pathname, country, lang);
   const base = getBaseUrl().replace(/\/$/, "");
-  const pathPart = suffix ? `/${suffix}` : "";
-  const defaultLang = getDefaultLangForCountry(country as CountryCode);
-  const canonical = lang === defaultLang
-    ? `${base}/${country}${pathPart}`
-    : `${base}/${country}/${lang}${pathPart}`;
-  const languages = getAlternateUrls(suffix);
+  const canonical = `${base}${pathname.startsWith("/") ? pathname : `/${pathname}`}`.replace(/\/$/, "") || `${base}/${country}`;
+  const languages = getAlternateUrls(suffix, citySlug);
   return {
     alternates: {
       canonical,
@@ -43,12 +42,25 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
   const locales = getContentLocalesForCountry(validCountry as CountryCode);
   const validLang = (locales.includes(langParam as LocaleCode) ? langParam : locales[0]) as LocaleCode;
 
+  const headersList = await headers();
+  const citySlug = headersList.get("x-city") ?? null;
+
   if (countryParam !== validCountry || langParam !== validLang) {
     const defLang = getDefaultLangForCountry(validCountry as CountryCode);
-    const to = validLang === defLang ? `/${validCountry}` : `/${validCountry}/${validLang}`;
+    const cityPart = citySlug ? `/${citySlug}` : "";
+    const to = validLang === defLang ? `/${validCountry}${cityPart}` : `/${validCountry}${cityPart}/${validLang}`;
     redirect(to);
   }
 
-  const localeState = await getLocaleContext({ country: validCountry, lang: validLang });
-  return <LocaleProvider value={localeState}>{children}</LocaleProvider>;
+  const localeState = await getLocaleContext({ country: validCountry, lang: validLang, citySlug });
+  return (
+    <LocaleProvider value={localeState}>
+      <ViewModeProvider>
+        <div className="min-h-screen flex flex-col w-full">
+          {children}
+          <Footer />
+        </div>
+      </ViewModeProvider>
+    </LocaleProvider>
+  );
 }

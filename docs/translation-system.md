@@ -17,6 +17,9 @@ messages/
   pl.json
   ru.json
   uk.json
+  de.json
+  es.json
+  it.json
   ...
 ```
 

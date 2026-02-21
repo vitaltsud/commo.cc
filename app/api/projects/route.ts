@@ -2,14 +2,20 @@ import { NextRequest } from "next/server";
 import { getDb } from "@/db";
 import { projects, users } from "@/db/schema";
 import { eq, and, desc } from "drizzle-orm";
+import { getCountryByCode } from "@/lib/countries";
+import { isValidCategorySlug } from "@/lib/categories";
+import { isCitySlug } from "@/lib/city-slugs";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
-  const country = searchParams.get("country") ?? "pl";
-  const category = searchParams.get("category");
-  const city = searchParams.get("city");
+  const countryParam = searchParams.get("country") ?? "pl";
+  const country = getCountryByCode(countryParam) ? countryParam : "pl";
+  const categoryParam = searchParams.get("category");
+  const category = categoryParam && isValidCategorySlug(categoryParam) ? categoryParam : undefined;
+  const cityParam = searchParams.get("city");
+  const city = cityParam && isCitySlug(country, cityParam) ? cityParam : undefined;
 
   const db = getDb();
   const cond = [eq(projects.countryCode, country)];

@@ -21,7 +21,7 @@
 
 - **В коде:** только английские ключи через `t("section.key")`. Без хардкода UI-строк.
 - **Эталон:** `messages/en.json` — все ключи и значения на **английском**. Новые фразы сначала добавлять в en.json.
-- **Локали:** русский, польский, украинский и др. — только в `messages/ru.json`, `messages/pl.json`, `messages/uk.json`. В коде и в en.json русского текста не писать.
+- **Локали:** русский, польский, украинский, немецкий, испанский, итальянский и др. — в `messages/ru.json`, `messages/pl.json`, `messages/uk.json`, `messages/de.json`, `messages/es.json`, `messages/it.json`. В коде и в en.json русского/локального текста не писать.
 - **Workflow:** при добавлении/изменении текста: (1) ключ и английский текст в **en.json**; (2) перевод в **ru.json** (и при необходимости в pl, uk); (3) в шаблоне — только `t("key")` или `t("key", { count, ... })`.
 - **Plural:** ключ-объект с формами `one`, `few`, `many`, `other` в JSON; в коде — `t("key", { count: n })`.
 
@@ -31,10 +31,11 @@
 
 ## 3. Контекст продукта (vision, стек, логика)
 
-- **Продукт:** глобальный сервисный маркетплейс (клиенты ↔ мастера). «Hard Trust»: обязательная верификация по ID и неизменяемые рейтинги от клиентов. Монетизация — подписка для мастеров (без комиссий с сделок). Экосистема Google: Auth, Chat, AI-аналитика.
+- **Продукт:** глобальный сервисный маркетплейс (клиенты ↔ мастера). «Hard Trust»: верификация по ID обязательна только для мастеров; рейтинги от клиентов неизменяемые. Один аккаунт может быть и заказчиком, и мастером; интерфейсы разделены («Мои проекты» vs «Как мастер»). Монетизация — подписка для мастеров (без комиссий с сделок). Экосистема Google: Auth, Chat, AI-аналитика.
 - **Стек:** Next.js (App Router), Tailwind, Framer Motion, Google OAuth. Шрифт Inter. Дизайн: минимализм, контраст (белый / Graphite `#1A1A1A`), mobile-first.
-- **Навигация:** логотип, «How it Works», «For Pros», «Sign in»; hero с поиском и сеткой категорий. После входа — «My Projects», «Messages», «Profile». Админка — `adm.commo.cc`.
+- **Навигация:** логотип; ссылки «Проекты», «Мастера» (ведут на главную к спискам); «How it Works», «For Pros»; выбор города, языка; «Sign in». После входа в меню пользователя: «My Projects», «As master», «Settings», «Sign out». Админка — `adm.commo.cc`.
 - **UI:** Inter, лёгкие анимации (framer-motion), акцент `#2563EB`. Мобильная навигация — удобная для большого пальца.
+- **Логика приложения (роли, верификация, поиск, сессия):** `docs/logic.md` — единый документ логики; поддерживать актуальным при изменениях.
 
 ---
 
@@ -51,4 +52,16 @@
 - Сервер, домены, деплой: `docs/server/`, `docs/deployment/plan.md`.
 - Локализация, переводы, URL/SEO: см. ссылки выше.
 
-Исходники правил для Cursor: `.cursor/rules/` (agent-does-everything.mdc, translation-locale.mdc, commo-system.mdc).
+Исходники правил для Cursor: `.cursor/rules/` (agent-does-everything.mdc, translation-locale.mdc, commo-system.mdc, security.mdc).
+
+---
+
+## 6. Безопасность
+
+- **Заголовки:** X-Frame-Options: DENY, X-Content-Type-Options: nosniff, Referrer-Policy: strict-origin-when-cross-origin, Permissions-Policy — заданы в `next.config.mjs` для всех ответов.
+- **Редиректы:** только относительные пути без `:`. В callback/signin проверка `isValidCallbackUrl` (startsWith("/") && !includes(":")) — защита от open redirect.
+- **Инъекции:** все запросы к БД через Drizzle ORM (параметризованные запросы). Запрещены сырые SQL со строковой конкатенацией пользовательского ввода.
+- **Ввод из API/форм:** параметры country, category, city — только из белых списков: `getCountryByCode`, `isValidCategorySlug`, `isCitySlug`. В server actions (setCountry, setLocale, setCity) то же самое.
+- **Сессия:** cookie httpOnly, secure в production, sameSite: lax. Подпись HMAC-SHA256; в production обязателен SESSION_SECRET (или CRYPTO_SECRET) не короче 16 символов. Сравнение подписей через timingSafeEqual.
+- **XSS:** в HTML не вставлять сырой пользовательский ввод. `dangerouslySetInnerHTML` — только для сгенерированного на сервере JSON-LD (JSON.stringify наших данных), без подстановки пользовательских данных в строку.
+- **Секреты:** GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, SESSION_SECRET — только в env, не в коде. В production не использовать fallback-секрет из кода.

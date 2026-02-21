@@ -3,8 +3,13 @@
  * Run: npx tsx scripts/seed.ts   (or npm run seed)
  */
 import Database from "better-sqlite3";
+import * as crypto from "crypto";
 import * as fs from "fs";
 import * as path from "path";
+
+function shortSlug(): string {
+  return crypto.randomBytes(6).toString("base64url").replace(/[-_]/g, "x").slice(0, 8);
+}
 
 const DB_PATH = process.env.DATABASE_PATH ?? path.join(process.cwd(), "data", "commo.db");
 
@@ -19,10 +24,12 @@ function runSeed() {
   sqlite.exec(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
+      google_id TEXT,
       email TEXT NOT NULL UNIQUE,
       name TEXT NOT NULL,
-      role TEXT NOT NULL CHECK(role IN ('client','pro')),
+      role TEXT,
       country_code TEXT NOT NULL,
+      client_rating INTEGER,
       created_at INTEGER NOT NULL
     );
     CREATE TABLE IF NOT EXISTS cities (
@@ -44,16 +51,26 @@ function runSeed() {
     CREATE TABLE IF NOT EXISTS pro_profiles (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       user_id INTEGER NOT NULL REFERENCES users(id),
-      city_slug TEXT,
+      slug TEXT,
+      plan TEXT NOT NULL DEFAULT 'free',
       category_slug TEXT NOT NULL,
       rating INTEGER,
       languages TEXT NOT NULL,
       verified INTEGER NOT NULL DEFAULT 0,
       bio TEXT
     );
+    CREATE TABLE IF NOT EXISTS pro_profile_cities (
+      pro_profile_id INTEGER NOT NULL REFERENCES pro_profiles(id) ON DELETE CASCADE,
+      city_slug TEXT NOT NULL,
+      PRIMARY KEY (pro_profile_id, city_slug)
+    );
   `);
   try { sqlite.exec("ALTER TABLE projects ADD COLUMN city_slug TEXT"); } catch { /* exists */ }
-  try { sqlite.exec("ALTER TABLE pro_profiles ADD COLUMN city_slug TEXT"); } catch { /* exists */ }
+  try { sqlite.exec("ALTER TABLE pro_profiles ADD COLUMN slug TEXT"); } catch { /* exists */ }
+  try { sqlite.exec("ALTER TABLE pro_profiles ADD COLUMN plan TEXT DEFAULT 'free'"); } catch { /* exists */ }
+  try { sqlite.exec("ALTER TABLE pro_profiles DROP COLUMN city_slug"); } catch { /* SQLite < 3.35 has no DROP COLUMN */ }
+  try { sqlite.exec("ALTER TABLE users ADD COLUMN google_id TEXT"); } catch { /* exists */ }
+  try { sqlite.exec("ALTER TABLE users ADD COLUMN client_rating INTEGER"); } catch { /* exists */ }
 
   const now = Date.now();
 
@@ -63,7 +80,12 @@ function runSeed() {
     { country_code: "de", slug: "berlin" }, { country_code: "de", slug: "munich" }, { country_code: "de", slug: "hamburg" }, { country_code: "de", slug: "cologne" },
     { country_code: "gb", slug: "london" }, { country_code: "gb", slug: "birmingham" }, { country_code: "gb", slug: "manchester" },
     { country_code: "us", slug: "newyork" }, { country_code: "us", slug: "losangeles" }, { country_code: "us", slug: "chicago" }, { country_code: "us", slug: "houston" },
+    { country_code: "ca", slug: "toronto" }, { country_code: "ca", slug: "montreal" }, { country_code: "ca", slug: "vancouver" }, { country_code: "ca", slug: "calgary" },
+    { country_code: "al", slug: "tirana" }, { country_code: "al", slug: "durres" }, { country_code: "al", slug: "vlore" },
+    { country_code: "me", slug: "podgorica" }, { country_code: "me", slug: "niksic" }, { country_code: "me", slug: "budva" },
+    { country_code: "bg", slug: "sofia" }, { country_code: "bg", slug: "plovdiv" }, { country_code: "bg", slug: "varna" }, { country_code: "bg", slug: "burgas" },
   ];
+  sqlite.exec("DELETE FROM pro_profile_cities");
   sqlite.exec("DELETE FROM pro_profiles");
   sqlite.exec("DELETE FROM projects");
   sqlite.exec("DELETE FROM cities");
@@ -120,12 +142,24 @@ function runSeed() {
   });
 
   const categories = ["cleaning", "plumbing", "electrical", "construction", "painting", "moving", "appliances"];
+  const plans: Array<"free" | "basic" | "premium"> = ["free", "free", "basic", "free", "premium"];
   const insPro = sqlite.prepare(
-    "INSERT INTO pro_profiles (user_id, city_slug, category_slug, rating, languages, verified, bio) VALUES (?, ?, ?, ?, ?, ?, ?)"
+    "INSERT INTO pro_profiles (user_id, slug, plan, category_slug, rating, languages, verified, bio) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
   );
+  const insProCity = sqlite.prepare("INSERT INTO pro_profile_cities (pro_profile_id, city_slug) VALUES (?, ?)");
+  const usedSlugs = new Set<string>();
   proIds.forEach((userId, idx) => {
+    let slug = shortSlug();
+    while (usedSlugs.has(slug)) slug = shortSlug();
+    usedSlugs.add(slug);
     const cat = categories[idx % categories.length];
-    insPro.run(userId, plCities[idx % plCities.length], cat, 85 + (idx % 15), JSON.stringify(["pl", "en"]), idx % 3 !== 0 ? 1 : 0, `Doświadczony fachowiec, ${cat}.`);
+    const plan = plans[idx % plans.length];
+    const r = insPro.run(userId, slug, plan, cat, 85 + (idx % 15), JSON.stringify(["pl", "en"]), idx % 3 !== 0 ? 1 : 0, `Doświadczony fachowiec, ${cat}.`);
+    const proProfileId = r.lastInsertRowid as number;
+    const numCities = plan === "free" ? 3 : plan === "basic" ? 5 : 10;
+    for (let i = 0; i < Math.min(numCities, plCities.length); i++) {
+      insProCity.run(proProfileId, plCities[(idx + i) % plCities.length]);
+    }
   });
 
   const countCities = sqlite.prepare("SELECT COUNT(*) as c FROM cities").get() as { c: number };

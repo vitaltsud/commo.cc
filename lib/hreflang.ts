@@ -5,6 +5,8 @@
 
 import { getValidLocaleSegments, parseLocaleSegment } from "@/lib/locale-format";
 import { getContentLocalesForCountry, getDefaultLangForCountry } from "@/lib/countries";
+import type { LocaleCode } from "@/lib/countries";
+import { isCitySlug } from "@/lib/city-slugs";
 
 const COUNTRY_TO_REGION: Record<string, string> = {
   pl: "PL",
@@ -12,6 +14,10 @@ const COUNTRY_TO_REGION: Record<string, string> = {
   de: "DE",
   gb: "GB",
   us: "US",
+  ca: "CA",
+  al: "AL",
+  me: "ME",
+  bg: "BG",
 };
 
 export function getBaseUrl(): string {
@@ -25,10 +31,11 @@ export function localeSegmentToHreflang(segment: string): string {
   return region ? `${lang}-${region}` : lang;
 }
 
-/** All alternate URLs. Default lang: /country/suffix; non-default: /country/lang/suffix. */
-export function getAlternateUrls(pathSuffix: string): Record<string, string> {
+/** All alternate URLs. New order: default lang /country/city/suffix, non-default /country/lang/city/suffix. */
+export function getAlternateUrls(pathSuffix: string, citySlug?: string | null): Record<string, string> {
   const base = getBaseUrl().replace(/\/$/, "");
   const suffix = pathSuffix ? (pathSuffix.startsWith("/") ? pathSuffix : `/${pathSuffix}`) : "";
+  const cityPart = citySlug ? `/${citySlug}` : "";
   const segments = getValidLocaleSegments();
   const out: Record<string, string> = {};
   for (const seg of segments) {
@@ -37,21 +44,24 @@ export function getAlternateUrls(pathSuffix: string): Record<string, string> {
     const hreflang = localeSegmentToHreflang(seg);
     const defaultLang = getDefaultLangForCountry(parsed.country);
     const path = parsed.lang === defaultLang
-      ? `/${parsed.country}${suffix}`
-      : `/${parsed.country}/${parsed.lang}${suffix}`;
+      ? `/${parsed.country}${cityPart}${suffix}`
+      : `/${parsed.country}/${parsed.lang}${cityPart}${suffix}`;
     out[hreflang] = `${base}${path}`;
   }
   return out;
 }
 
-/** Path suffix from pathname. Supports /country/ (default lang) and /country/lang/... (non-default). */
+/** Path suffix from pathname. New order: /country/city/rest, /country/lang/city/rest, /country/lang/rest. */
 export function pathSuffixFromInternalPath(pathname: string, country: string, lang: string): string {
   const segs = pathname.replace(/\/$/, "").split("/").filter(Boolean);
   if (segs[0] !== country || segs.length < 2) return "";
   const contentLocales = getContentLocalesForCountry(country);
   const second = segs[1];
-  if (contentLocales.includes(second as "en" | "pl" | "ru" | "uk" | "de" | "fr" | "es")) {
-    return segs.slice(2).join("/").replace(/\/$/, "");
+  if (contentLocales.includes(second as LocaleCode)) {
+    const third = segs[2];
+    if (third && isCitySlug(country, third)) return (segs.slice(3).join("/") ?? "").replace(/\/$/, "");
+    return (segs.slice(2).join("/") ?? "").replace(/\/$/, "");
   }
-  return segs.slice(1).join("/").replace(/\/$/, "");
+  if (second && isCitySlug(country, second)) return (segs.slice(2).join("/") ?? "").replace(/\/$/, "");
+  return (segs.slice(1).join("/") ?? "").replace(/\/$/, "");
 }

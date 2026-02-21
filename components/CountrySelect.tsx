@@ -3,24 +3,19 @@
 import { usePathname } from "next/navigation";
 import { useLocale } from "./LocaleContext";
 import { setCountry } from "@/app/actions/locale";
+import { pathWithoutLocale } from "@/lib/paths";
 import { getNested } from "@/lib/i18n";
-import { countries } from "@/lib/countries";
-
-/** Path without locale prefix: /pl/pl/settings -> "settings", /pl/pl -> "" */
-function pathWithoutLocale(pathname: string): string {
-  const segments = pathname.split("/").filter(Boolean);
-  return segments.slice(2).join("/") ?? "";
-}
+import { countriesSortedAlphabetically, getCountryNameInLocale } from "@/lib/countries";
 
 export function CountrySelect() {
   const pathname = usePathname();
-  const { countryCode, messages } = useLocale();
+  const { countryCode, localeCode, messages } = useLocale();
   const label = getNested(messages, "country.label") ?? "Country";
 
   async function handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const code = e.target.value as string;
     if (!code) return;
-    await setCountry(code, pathWithoutLocale(pathname));
+    await setCountry(code, pathWithoutLocale(pathname, countryCode));
   }
 
   return (
@@ -32,9 +27,9 @@ export function CountrySelect() {
         className="border border-gray-300 rounded px-2 py-1 text-graphite bg-white focus:outline-none focus:ring-2 focus:ring-accent"
         aria-label={label}
       >
-        {countries.map((c) => (
+        {countriesSortedAlphabetically.map((c) => (
           <option key={c.code} value={c.code}>
-            {c.nativeName}
+            {getCountryNameInLocale(c, localeCode)}
           </option>
         ))}
       </select>

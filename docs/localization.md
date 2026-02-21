@@ -12,17 +12,22 @@
 - **Страны и языки:** `lib/countries.ts` — список стран, для каждой: `contentLocales` (языки контента; первый = дефолтный для URL) и `activeCategoryIds` (пустой = все категории активны).
 - **URL:** `/страна/` = дефолтный язык, `/страна/язык/` = остальные. Подробно: [urls-and-seo.md](urls-and-seo.md).
 - **Куки:** `commo_country` — выбранная страна, `commo_locale` — язык контента (должен входить в `contentLocales` страны).
-- **Переводы:** `messages/{en,pl,ru,uk,de,es}.json` — ключи для хедера, главной, настроек, профиля и т.д.
-- **Выбор страны и языка:** в шапке (CountrySelect, LanguageSelect); при смене страны язык подстраивается под доступные для страны.
-- **Настройки:** `/settings` — страна (для данных) и языки общения (чекбоксы из языков страны); сохраняются в cookie (страна) и localStorage (языки; позже — в API).
+- **Переводы:** `messages/{en,pl,ru,uk,de,es,it}.json` — ключи для хедера, главной, настроек, профиля, лендинга и т.д.
+- **Названия стран:** отображаются на **текущем языке интерфейса** — `getCountryNameInLocale(country, localeCode)` в `lib/countries.ts`. Используется на лендинге (карточки), в CountrySelect, в настройках, в LandingMap.
+- **Выбор страны и языка:** в шапке (CountrySelect, LanguageDropdown, CitySelect); при смене страны язык подстраивается под доступные для страны.
+- **Лендинг (`/`):** переключатель языка в шапке; карточки стран — одна кликабельная карточка на страну (без выбора языка на карточке). Клик ведёт на главную страны в **текущем языке** лендинга (если страна его поддерживает). Список стран отсортирован по английскому названию (`countriesSortedAlphabetically`).
+- **Настройки:** `/settings` — страна (для данных) и языки общения (чекбоксы, включая итальянский и др.); сохраняются в cookie (страна) и localStorage (языки; позже — в API).
 - **Отображение языков:** компонент `UserLanguagesBadge` — принимает `languages: LocaleCode[]`, выводит «Говорит: PL, EN, RU». Использовать в карточках мастера и клиента.
 
 ## Добавление страны
 
-В `lib/countries.ts` добавить объект в `countries`: `code`, `name` (объект с ключами локалей), `contentLocales`, `activeCategoryIds`.
+В `lib/countries.ts` добавить объект в `countries`: `code`, `nativeName`, `name` (объект с ключами локалей: en, pl, ru, uk, de, it и т.д. — для отображения названия страны на текущем языке), `contentLocales`, `activeCategoryIds`. При необходимости добавить города страны в `lib/city-slugs.ts` (CITY_SLUGS_BY_COUNTRY). Список стран для отображения сортируется по английскому названию (`name.en`).
 
 ## Добавление языка контента
 
-1. Добавить код в `LocaleCode` в `lib/countries.ts` и при необходимости в `lib/locales.ts`.
-2. Создать `messages/{code}.json` с теми же ключами, что и в `en.json`.
-3. Добавить код в `contentLocales` нужных стран.
+1. Добавить код в тип `LocaleCode` в `lib/countries.ts`.
+2. Добавить название языка в `lib/locales.ts` (`localeNames`, `localeNamesNative`) и в `lib/plural-rules.ts` (`localeToBCP47`).
+3. Создать `messages/{code}.json` с теми же ключами, что и в `en.json` (значения — на новом языке).
+4. Добавить код в `contentLocales` нужных стран в `lib/countries.ts`.
+5. Добавить в `LANDING_LOCALES` в `components/LandingContent.tsx` и `app/page.tsx` (лендинг); при необходимости — в список языков общения в `components/SettingsContent.tsx`.
+6. Для названий стран на новом языке добавить ключ в `name` у каждой страны в `countries` (например `it: "Italia"` для Италии).

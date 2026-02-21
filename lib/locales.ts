@@ -8,6 +8,10 @@ export const localeNames: Record<LocaleCode, string> = {
   de: "Deutsch",
   fr: "Français",
   es: "Español",
+  it: "Italiano",
+  sq: "Shqip",
+  bg: "Български",
+  sr: "Српски",
 };
 
 export const localeNamesNative: Record<string, string> = {
@@ -18,4 +22,8 @@ export const localeNamesNative: Record<string, string> = {
   de: "Deutsch",
   fr: "Français",
   es: "Español",
+  it: "Italiano",
+  sq: "Shqip",
+  bg: "Български",
+  sr: "Српски",
 };

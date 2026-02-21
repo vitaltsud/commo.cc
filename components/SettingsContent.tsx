@@ -3,11 +3,13 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { Header } from "@/components/Header";
-import { useLocale, useT } from "./LocaleContext";
+import { Breadcrumbs, BREADCRUMBS_WEBSITE_ID } from "@/components/Breadcrumbs";
+import { useLocale, useT, useLocalePath } from "./LocaleContext";
 import { setCountry } from "@/app/actions/locale";
-import { countries, getContentLocalesForCountry } from "@/lib/countries";
+import { countriesSortedAlphabetically, getContentLocalesForCountry, getCountryNameInLocale } from "@/lib/countries";
 import { localeNamesNative } from "@/lib/locales";
 import type { LocaleCode } from "@/lib/countries";
+import { pathWithoutLocale } from "@/lib/paths";
 
 // In real app: load/save from API. For now we only persist country via cookie; communication languages in state/localStorage.
 const STORAGE_KEY = "commo_communication_languages";
@@ -18,7 +20,7 @@ function getStoredLanguages(): LocaleCode[] {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return [];
     const arr = JSON.parse(raw) as string[];
-    return Array.isArray(arr) ? arr.filter((x): x is LocaleCode => ["en", "pl", "ru", "uk", "de", "fr", "es"].includes(x)) : [];
+    return Array.isArray(arr) ? arr.filter((x): x is LocaleCode => ["en", "pl", "ru", "uk", "de", "fr", "es", "it"].includes(x)) : [];
   } catch {
     return [];
   }
@@ -29,19 +31,20 @@ function setStoredLanguages(locales: LocaleCode[]) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(locales));
 }
 
-function pathWithoutLocale(pathname: string): string {
-  const segments = pathname.split("/").filter(Boolean);
-  return segments.slice(2).join("/") ?? "";
-}
 
 export function SettingsContent() {
   const t = useT();
+  const path = useLocalePath();
   const pathname = usePathname();
-  const { countryCode } = useLocale();
+  const { countryCode, localeCode } = useLocale();
   const [selectedCountry, setSelectedCountry] = useState(countryCode);
   const [communicationLangs, setCommunicationLangs] = useState<LocaleCode[]>([]);
   const [mounted, setMounted] = useState(false);
   const availableForCountry = getContentLocalesForCountry(selectedCountry);
+  const breadcrumbItems = [
+    { label: t("breadcrumbs.home"), href: path("") },
+    { label: t("breadcrumbs.settings"), href: path("settings") },
+  ];
 
   useEffect(() => {
     setCommunicationLangs(getStoredLanguages());
@@ -53,7 +56,7 @@ export function SettingsContent() {
 
   const handleSaveCountry = async () => {
     setStoredLanguages(communicationLangs);
-    await setCountry(selectedCountry, pathWithoutLocale(pathname));
+    await setCountry(selectedCountry, pathWithoutLocale(pathname, countryCode));
   };
 
   const toggleCommLang = (loc: LocaleCode) => {
@@ -67,7 +70,15 @@ export function SettingsContent() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 max-w-2xl mx-auto px-4 py-12">
+      <main className="flex-1 w-full max-w-6xl mx-auto px-4 py-12">
+        <Breadcrumbs
+          items={breadcrumbItems}
+          pageSchema={{
+            name: t("settings.title"),
+            url: path("settings"),
+            isPartOf: { "@id": BREADCRUMBS_WEBSITE_ID },
+          }}
+        />
         <h1 className="text-2xl font-semibold text-graphite mb-8">{t("settings.title")}</h1>
 
         <section className="mb-8">
@@ -78,9 +89,9 @@ export function SettingsContent() {
             onChange={(e) => setSelectedCountry(e.target.value)}
             className="w-full max-w-xs border border-gray-300 rounded-lg px-3 py-2 text-graphite"
           >
-            {countries.map((c) => (
+            {countriesSortedAlphabetically.map((c) => (
               <option key={c.code} value={c.code}>
-                {c.nativeName}
+                {getCountryNameInLocale(c, localeCode)}
               </option>
             ))}
           </select>

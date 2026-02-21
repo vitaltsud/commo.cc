@@ -25,6 +25,25 @@
 
 Дефолтный язык страны — первый в `contentLocales` в `lib/countries.ts` (например для Польши это `pl`).
 
+### Проекты и исполнители: город в конце URL
+
+- **`/страна/язык/projects/категория`** — проекты по категории (все города).
+- **`/страна/язык/projects/категория/город`** — проекты по категории в городе (например `/pl/ru/projects/cleaning/warsaw`).
+- Аналогично **`/страна/язык/contractors/категория`** и **`/страна/язык/contractors/категория/город`**.
+
+Старый формат с городом в середине (**`/pl/ru/warsaw/projects/cleaning`**) отдаёт **301 redirect** на новый: `/pl/ru/projects/cleaning/warsaw`.
+
+**Главная с городом:** `/страна/язык/город` (например `/pl/ru/warsaw`) — главная страница с фильтрацией списков проектов и мастеров по выбранному городу. Маршрут: `app/[country]/[lang]/[city]/page.tsx`. Middleware выставляет заголовок `x-city` для такого URL.
+
+### Отдельные страницы списков
+
+- **`/страна/язык/projects`** — все проекты страны (маршрут `app/[country]/[lang]/projects/page.tsx`).
+- **`/страна/язык/город/projects`** — проекты в выбранном городе (`app/[country]/[lang]/[city]/projects/page.tsx`).
+- **`/страна/язык/contractors`** — все мастера страны (`app/[country]/[lang]/contractors/page.tsx`).
+- **`/страна/язык/город/contractors`** — мастера в городе (`app/[country]/[lang]/[city]/contractors/page.tsx`).
+
+В шапке пункты «Проекты» и «Майстри» ведут на эти страницы (с учётом выбранного города в URL). Middleware для путей `.../город/projects` и `.../город/contractors` выставляет `x-city`.
+
 ## Где что лежит
 
 | Задача | Файл / функция |
@@ -49,8 +68,8 @@
 4. **Запрос `/pl/xxx/`**, где `xxx` не язык (например `signin`, `how-it-works`)  
    **Rewrite** в `/pl/<дефолтный_язык>/xxx/`, `x-pathname` = `/pl/xxx/`.
 
-5. **Один сегмент без локали** (например `/signin`)  
-   **Redirect** на `/pl/signin` (дефолтная страна Польша).
+5. **Один сегмент без локали** (например `/signin`, `/my-projects`, `/pro`)  
+   **Redirect** на `/pl/signin`, `/pl/my-projects`, `/pl/pro` (дефолтная страна Польша). Полный список таких путей — в `middleware.ts` (`legacyPaths`).
 
 ## Ссылки и canonical
 

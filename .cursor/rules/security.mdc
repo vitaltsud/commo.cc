@@ -1,0 +1,45 @@
+---
+description: commo.cc — security standards, no vulnerabilities, injection protection
+alwaysApply: true
+---
+
+# Security (commo.cc)
+
+## Headers (next.config.mjs)
+
+- **X-Frame-Options:** DENY
+- **X-Content-Type-Options:** nosniff
+- **Referrer-Policy:** strict-origin-when-cross-origin
+- **Permissions-Policy:** camera=(), microphone=(), geolocation=()
+- **X-DNS-Prefetch-Control:** on
+
+Do not remove or relax these without explicit security review.
+
+## Redirects (Open Redirect)
+
+- All redirect URLs must be validated: relative path only, no `:`. Use `isValidCallbackUrl` (startsWith("/") && !includes(":")) for callbackUrl/state.
+- Never redirect to user-controlled or query-derived URLs without this check.
+
+## Injection
+
+- **SQL:** Use only Drizzle ORM (parameterized queries). No raw SQL with string concatenation of user input.
+- **API/forms:** Parameters `country`, `category`, `city` must be validated against allowlists:
+  - country: `getCountryByCode(code)` (only known country codes)
+  - category: `isValidCategorySlug(slug)` (lib/categories)
+  - city: `isCitySlug(countryCode, slug)` (lib/city-slugs)
+- Apply the same allowlists in server actions (setCountry, setLocale, setCity).
+
+## Session & Cookies
+
+- Session cookie: **httpOnly**, **secure** in production, **sameSite: lax**.
+- Sign with HMAC-SHA256; use **timingSafeEqual** for signature comparison.
+- In production, **SESSION_SECRET** (or CRYPTO_SECRET) is required, at least 16 characters. No fallback dev secret in production.
+
+## XSS
+
+- Do not insert raw user input into HTML. Use React escaping (default) or sanitize.
+- **dangerouslySetInnerHTML** only for server-generated JSON-LD: `JSON.stringify(ourData)` with no user input interpolated into the string.
+
+## Secrets
+
+- GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, SESSION_SECRET, DATABASE_PATH — only in environment (e.g. .env.local). Never commit or hardcode in source.

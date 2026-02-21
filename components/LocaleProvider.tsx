@@ -10,12 +10,13 @@ import {
 export interface LocaleContextValue {
   countryCode: string;
   localeCode: LocaleCode;
+  citySlug: string | null;
   messages: Record<string, unknown>;
 }
 
-export type LocaleParams = { country: string; lang: string };
+export type LocaleParams = { country: string; lang: string; citySlug?: string | null };
 
-/** Build locale context from URL params (e.g. /pl/pl/). Invalid params fallback to default. */
+/** Build locale context from URL params (e.g. /pl/pl/ or /pl/warsaw/). Invalid params fallback to default. */
 export async function getLocaleContext(params: LocaleParams): Promise<LocaleContextValue> {
   const countryCode = (params.country || defaultCountryCode) as CountryCode;
   const country = getCountryByCode(countryCode);
@@ -27,6 +28,7 @@ export async function getLocaleContext(params: LocaleParams): Promise<LocaleCont
   return {
     countryCode: validCountry,
     localeCode,
+    citySlug: params.citySlug ?? null,
     messages,
   };
 }

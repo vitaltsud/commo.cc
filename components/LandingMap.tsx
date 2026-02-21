@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { countries } from "@/lib/countries";
+import { useLocale } from "./LocaleContext";
+import { countries, getCountryNameInLocale } from "@/lib/countries";
 import { getEnglishLocaleForCountry, parseLocaleSegment } from "@/lib/locale-format";
 import { localePath } from "@/lib/paths";
 
@@ -47,6 +48,7 @@ function flagEmoji(code: string): string {
 }
 
 export function LandingMap() {
+  const { localeCode } = useLocale();
   return (
     <section className="w-full max-w-4xl mx-auto">
       <h2 className="text-xl font-semibold text-graphite text-center mb-6">
@@ -94,8 +96,8 @@ export function LandingMap() {
                 <Link
                   href={href}
                   className="block w-4 h-4 -ml-2 -mt-2 rounded-full bg-accent border-2 border-white shadow-md hover:scale-125 hover:bg-accent/90 transition-transform focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent"
-                  title={c.nativeName}
-                  aria-label={`${c.nativeName} — open marketplace`}
+                  title={getCountryNameInLocale(c, localeCode)}
+                  aria-label={`${getCountryNameInLocale(c, localeCode)} — open marketplace`}
                 />
               </Marker>
             );
@@ -113,12 +115,12 @@ export function LandingMap() {
                 <Link
                   href={href}
                   className="flex items-center gap-3 py-2 px-3 rounded-lg text-graphite hover:bg-white hover:shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
-                  aria-label={`${c.nativeName} — open marketplace`}
+                  aria-label={`${getCountryNameInLocale(c, localeCode)} — open marketplace`}
                 >
                   <span className="text-2xl leading-none" aria-hidden>
                     {flagEmoji(c.code)}
                   </span>
-                  <span className="font-medium">{c.nativeName}</span>
+                  <span className="font-medium">{getCountryNameInLocale(c, localeCode)}</span>
                 </Link>
               </li>
             );

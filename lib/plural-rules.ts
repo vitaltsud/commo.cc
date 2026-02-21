@@ -11,6 +11,10 @@ const localeToBCP47: Record<LocaleCode, string> = {
   de: "de",
   fr: "fr",
   es: "es",
+  it: "it",
+  sq: "sq",
+  bg: "bg",
+  sr: "sr",
 };
 
 /**

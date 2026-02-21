@@ -3,23 +3,19 @@
 import { usePathname } from "next/navigation";
 import { useLocale } from "./LocaleContext";
 import { setLocale } from "@/app/actions/locale";
-import { getContentLocalesForCountry } from "@/lib/countries";
+import { pathWithoutLocale } from "@/lib/paths";
+import { getContentLocalesForCountrySorted } from "@/lib/countries";
 import { localeNamesNative } from "@/lib/locales";
-
-function pathWithoutLocale(pathname: string): string {
-  const segments = pathname.split("/").filter(Boolean);
-  return segments.slice(2).join("/") ?? "";
-}
 
 export function LanguageSelect() {
   const pathname = usePathname();
-  const { countryCode, localeCode } = useLocale();
-  const locales = getContentLocalesForCountry(countryCode);
+  const { countryCode, localeCode, citySlug } = useLocale();
+  const locales = getContentLocalesForCountrySorted(countryCode);
 
   async function handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    const code = e.target.value as "en" | "pl" | "ru" | "uk" | "de" | "fr" | "es";
+    const code = e.target.value;
     if (!code) return;
-    await setLocale(code, pathWithoutLocale(pathname));
+    await setLocale(code, pathWithoutLocale(pathname, countryCode), citySlug);
   }
 
   return (

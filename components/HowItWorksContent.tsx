@@ -1,14 +1,24 @@
 "use client";
 
 import { Header } from "@/components/Header";
-import { useT } from "./LocaleContext";
+import { Breadcrumbs, BREADCRUMBS_WEBSITE_ID } from "@/components/Breadcrumbs";
+import { useT, useLocalePath } from "./LocaleContext";
 
 export function HowItWorksContent() {
   const t = useT();
+  const path = useLocalePath();
+  const breadcrumbItems = [
+    { label: t("breadcrumbs.home"), href: path("") },
+    { label: t("breadcrumbs.howItWorks"), href: path("how-it-works") },
+  ];
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 max-w-3xl mx-auto px-4 py-12">
+      <main className="flex-1 w-full max-w-6xl mx-auto px-4 py-12">
+        <Breadcrumbs
+          items={breadcrumbItems}
+          pageSchema={{ name: t("howItWorks.title"), url: path("how-it-works"), isPartOf: { "@id": BREADCRUMBS_WEBSITE_ID } }}
+        />
         <h1 className="text-2xl font-semibold text-graphite mb-6">{t("howItWorks.title")}</h1>
         <ol className="space-y-6 text-graphite">
           <li className="flex gap-4">

@@ -2,11 +2,11 @@
 
 ## Схема
 
-- **users** — заказчики (`role=client`) и мастера (`role=pro`): id, email, name, role, country_code, created_at.
-- **projects** — проекты заказчиков: id, client_id, country_code, category_slug, title, description, status, created_at.
-- **pro_profiles** — профили мастеров по категориям: user_id, category_slug, rating, languages (JSON), verified, bio.
+- **users** — один аккаунт может быть и заказчиком, и мастером: id, google_id (уникальный, для OAuth), email, name, country_code, client_rating (рейтинг как заказчик), created_at. Поле role опционально (для совместимости с сидом).
+- **projects** — проекты заказчиков: id, client_id → users.id, country_code, city_slug, category_slug, title, description, status, created_at.
+- **pro_profiles** — профили мастеров по категориям: user_id → users.id, slug (для URL), plan (free/basic/premium), category_slug, rating (рейтинг как мастер), languages (JSON), verified (обязательно для выдачи в поиске), bio. Города — в pro_profile_cities.
 
-Категории по-прежнему задаются в коде (`lib/categories.ts`). В БД хранятся только пользователи, проекты и профили мастеров.
+Категории задаются в коде (`lib/categories.ts`). В выдаче мастеров участвуют только записи с `pro_profiles.verified = true`; фильтр по `users.role` не используется. Логика ролей и верификации: `docs/logic.md`.
 
 ## Локальный запуск
 
@@ -24,7 +24,8 @@
 
 ## API
 
-- `GET /api/projects?country=pl&category=cleaning` — список проектов по стране и категории.
-- `GET /api/pros?country=pl&category=cleaning` — список мастеров по стране и категории.
+- `GET /api/projects?country=pl&category=cleaning&city=warsaw` — список проектов по стране, категории и опционально городу.
+- `GET /api/pros?country=pl&category=cleaning&city=warsaw` — список **верифицированных** мастеров по стране, категории и опционально городу.
+- `GET /api/auth/session` — текущий пользователь и роли (client, pro, proVerified); cookie-based.
 
-Страница `/country/lang/search/category` загружает проекты и мастеров напрямую из БД (без вызова API), чтобы не делать self-request.
+Страницы проектов и мастеров (`/country/.../projects/[category]`, `contractors/[category]`) загружают данные напрямую из БД через `lib/search-data.ts` (без вызова этих API).

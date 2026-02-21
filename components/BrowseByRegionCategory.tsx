@@ -20,8 +20,10 @@ export function BrowseByRegionCategory({ cities }: Props) {
         {cities.map((c) => (
           <Link
             key={c.id}
-            href={path(`search/cleaning`)}
+            href={path(`projects/cleaning`)}
             className="px-3 py-1.5 rounded-lg text-sm bg-gray-100 text-graphite hover:bg-gray-200"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             {t(`city.${c.slug}` as "city.warsaw")}
           </Link>
@@ -32,8 +34,10 @@ export function BrowseByRegionCategory({ cities }: Props) {
         {categories.slice(0, 6).map((cat) => (
           <Link
             key={cat.id}
-            href={path(`search/${cat.slug}`)}
+            href={path(`projects/${cat.slug}`)}
             className="px-3 py-1.5 rounded-lg text-sm border border-gray-200 text-graphite hover:border-accent hover:text-accent"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             {t(`category.${cat.id}`)}
           </Link>

@@ -4,8 +4,10 @@
     "howItWorks": "Jak to działa",
     "forPros": "Dla fachowców",
     "signIn": "Zaloguj przez Google",
+    "signOut": "Wyloguj",
     "settings": "Ustawienia",
     "myProjects": "Moje projekty",
+    "proDashboard": "Jako fachowiec",
     "messages": "Wiadomości"
   },
   "home": {
@@ -14,7 +16,24 @@
     "orChooseCategory": "lub wybierz kategorię",
     "browseByRegion": "Przeglądaj po regionie i kategorii",
     "offersFeed": "Ostatnie oferty",
-    "mastersFeed": "Fachowcy w Twoim regionie"
+    "mastersFeed": "Fachowcy w Twoim regionie",
+    "chooseLanguage": "Wybierz język",
+    "projectsSectionTitle": "Projekty",
+    "contractorsSectionTitle": "Fachowcy",
+    "sectionProjectsContractors": "Projekty i fachowcy",
+    "benefits": {
+      "title": "Dlaczego commo.cc",
+      "forClients": "Dla zamawiających",
+      "forPros": "Dla fachowców",
+      "client1": "Zweryfikowani fachowcy — w wyszukiwarce tylko mistrzowie z weryfikacją tożsamości.",
+      "client2": "Łatwe wyszukiwanie — po kategorii, regionie i prawdziwych ocenach.",
+      "client3": "Elastyczność — opublikuj zlecenie lub przeglądaj i kontaktuj się z fachowcami.",
+      "client4": "Sprawiedliwe oceny — tylko Ty oceniasz; fachowcy nie mogą ich zmieniać.",
+      "pro1": "Zaufanie — weryfikacja tożsamości pokazuje klientom, że jesteś realny.",
+      "pro2": "Bez prowizji — abonament wg kategorii i regionu.",
+      "pro3": "Zniżka za lojalność — wysoka ocena obniża koszt abonamentu.",
+      "pro4": "Sprawiedliwa gra — oceniają tylko klienci; ocen nie da się zmienić."
+    }
   },
   "country": {
     "label": "Kraj",
@@ -74,7 +93,22 @@
     "newyork": "Nowy Jork",
     "losangeles": "Los Angeles",
     "chicago": "Chicago",
-    "houston": "Houston"
+    "houston": "Houston",
+    "toronto": "Toronto",
+    "montreal": "Montreal",
+    "vancouver": "Vancouver",
+    "calgary": "Calgary",
+    "tirana": "Tirana",
+    "durres": "Durrës",
+    "vlore": "Vlorë",
+    "podgorica": "Podgorica",
+    "niksic": "Nikšić",
+    "budva": "Budva",
+    "sofia": "Sofia",
+    "plovdiv": "Płowdiw",
+    "varna": "Warna",
+    "burgas": "Burgas",
+    "rome": "Rzym", "milan": "Mediolan", "naples": "Neapol", "turin": "Turyn", "florence": "Florencja"
   },
   "signin": {
     "title": "Zaloguj się",
@@ -110,5 +144,49 @@
     "moving": "Przeprowadzki",
     "landscaping": "Ogrodnictwo",
     "appliances": "Agd"
+  },
+  "breadcrumbs": {
+    "home": "Strona główna",
+    "projects": "Projekty",
+    "contractors": "Fachowcy",
+    "howItWorks": "Jak to działa",
+    "forPros": "Dla fachowców",
+    "signin": "Zaloguj się",
+    "settings": "Ustawienia",
+    "privacyPolicy": "Polityka prywatności",
+    "terms": "Regulamin",
+    "search": "Szukaj"
+  },
+  "myProjects": {
+    "intro": "Twoje projekty jako zleceniodawca. Publikuj bez weryfikacji.",
+    "comingSoon": "Lista i tworzenie projektów — wkrótce."
+  },
+  "pro": {
+    "becomeMaster": "Zostań fachowcem",
+    "verificationRequired": "Aby działać jako fachowiec, musisz przejść weryfikację tożsamości. Osobne oceny dla zleceniodawcy i fachowca.",
+    "verificationComingSoon": "Proces weryfikacji — wkrótce.",
+    "pendingVerification": "Twój profil fachowca oczekuje na weryfikację.",
+    "dashboardIntro": "Twój zweryfikowany profil(y) fachowca:",
+    "dashboardComingSoon": "Panel fachowca — wkrótce."
+  },
+  "viewMode": {
+    "switchLabel": "Tryb widoku",
+    "asClient": "Ja zamawiający",
+    "asMaster": "Ja fachowiec"
+  },
+  "landing": {
+    "title": "Globalny rynek usług",
+    "subtitle": "Rynek łączący klientów ze zweryfikowanymi fachowcami. Wybierz kraj.",
+    "chooseLanguage": "Wybierz język",
+    "countryAndLanguage": "Kraj i język",
+    "block1Title": "Hard Trust",
+    "block1Desc": "Obowiązkowa weryfikacja tożsamości i niezmienne oceny od klientów. Tylko zweryfikowani fachowcy; tylko klienci oceniają.",
+    "block2Title": "Bez prowizji od transakcji",
+    "block2Desc": "Abonament dla fachowców wg kategorii i regionu. Zniżka za lojalność przy ocenie 4.9+.",
+    "block3Title": "Logowanie i czat",
+    "block3Desc": "Logowanie przez Google. Porozumiewaj się i umawiaj z fachowcami w Google Chat — bez instalowania dodatkowej aplikacji.",
+    "privacyPolicy": "Polityka prywatności",
+    "termsOfUse": "Regulamin",
+    "global": "Globalnie"
   }
 }

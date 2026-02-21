@@ -8,12 +8,14 @@ import type { LocaleCode } from "@/lib/countries";
 export interface LocaleState {
   countryCode: string;
   localeCode: LocaleCode;
+  citySlug: string | null;
   messages: Record<string, unknown>;
 }
 
 const defaultState: LocaleState = {
   countryCode: "pl",
   localeCode: "en",
+  citySlug: null,
   messages: {},
 };
 
@@ -44,8 +46,8 @@ export function useT() {
     translate(messages, path, localeCode, options) || path;
 }
 
-/** Build locale-prefixed URL for current country/lang: path("") => "/pl/pl", path("how-it-works") => "/pl/pl/how-it-works" */
+/** Build locale-prefixed URL for current country/lang (and city if set): path("") => "/pl/warsaw" or "/pl/pl" */
 export function useLocalePath() {
-  const { countryCode, localeCode } = useLocale();
-  return (path: string = "") => localePath(countryCode, localeCode, path);
+  const { countryCode, localeCode, citySlug } = useLocale();
+  return (path: string = "") => localePath(countryCode, localeCode, path, citySlug);
 }
