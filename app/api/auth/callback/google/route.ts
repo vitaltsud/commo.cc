@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
       callbackUrl = null;
     }
   }
-  const redirectPath = isValidCallbackUrl(callbackUrl) ? callbackUrl : "/pl/pl";
+  const redirectPath = (isValidCallbackUrl(callbackUrl) ? callbackUrl : null) ?? "/pl/pl";
   const redirectUrl = new URL(redirectPath, baseUrl);
   const signinErrorUrl = new URL("/pl/pl/signin?error=callback", baseUrl);
 
